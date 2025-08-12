@@ -55,7 +55,7 @@ Break down the implementation into logical stages:
 - Complex functionality
 - Integrations
 4. **Stage 4: Polish & Optimization**
-- UI/UX enhancements
+- UI/UX/API enhancements
 - Performance optimization
 - Testing and debugging
 
@@ -67,6 +67,7 @@ For each stage, create:
 - **Estimated time/effort indicators**
 - **Dependencies between tasks**
 - **Required resources or team members**
+- **A verbal description of design choices as well as diagrams in plantUML**
 
 
 ## Output Format Requirements
@@ -99,6 +100,12 @@ For each stage, create:
 ### Additional Tools:
 - **[Tool Category]:** [Technology] - [Brief justification]
 - **Documentation:** [Link to official docs]
+
+### Design DEcisions:
+- Overall design choises
+- **[Feature X]:** using model view controler pattern, component diagram, sequence diagram, folder structure
+- **[Feature Y]:** secrurity design xyz
+
 
 ## Implementation Stages
 ### Stage 1: Foundation & Setup
@@ -141,7 +148,7 @@ For each stage, create:
 #### Sub-steps:
 - [ ] Conduct comprehensive testing
 - [ ] Optimize performance
-- [ ] Enhance UI/UX
+- [ ] Enhance UI/UX and API
 - [ ] Implement error handling
 - [ ] Prepare for deployment
 
