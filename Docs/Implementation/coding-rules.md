@@ -1,4 +1,3 @@
-
 # Core coding-rules
 - Always prefer simple solutions
 - Avoid duplication of code whenever possible, which means checking for other areas of the codebase that might already have similar code and functionality
@@ -21,13 +20,13 @@
 - When writing unit-tests, don't change the source code to get the units to work, let the unit tests fail until the root source code issue is resolved.
 - If the project uses python, setup a virtual environment for it
 
-# 1) Core Principles (the “why”)
+# 1) Core Principles (the "why")
 
 KISS – Prefer the simplest design that works; complexity grows costs non‑linearly.
 SRP – Each module/class/function has one reason to change.
-DRY – Don’t repeat knowledge; centralize behavior.
-Tell, don’t ask – Expose behavior, not internal data; avoid feature envy.
-YAGNI – Don’t build for hypothetical futures.
+DRY – Don't repeat knowledge; centralize behavior.
+Tell, don't ask – Expose behavior, not internal data; avoid feature envy.
+YAGNI – Don't build for hypothetical futures.
 
 Boy Scout Rule – Leave the code a little cleaner than you found it.
 
@@ -38,7 +37,7 @@ Small, cohesive units – Prefer many small, focused parts over few large ones.
 # 3) Naming
 
 Use intention‑revealing names; prefer clarity over brevity (invoiceTotal not it).
-Avoid mental mapping; don’t encode types or Hungarian notation.
+Avoid mental mapping; don't encode types or Hungarian notation.
 Use domain language consistently (ubiquitous language). Align with docs and APIs.
 Name booleans as predicates (isEmpty, hasAccess).
 Rename without fear—good names are a refactor, not a luxury.
@@ -49,7 +48,7 @@ Keep functions short (ideally 5–20 lines) and single‑purpose.
 One level of abstraction per function; extract details into helpers.
 Minimize arguments (0–2 typical). Prefer parameter objects for related groups.
 Return early for guard clauses; avoid deep nesting.
-No side effects unless the function’s name clearly promises them.
+No side effects unless the function's name clearly promises them.
 Prefer pure functions when feasible.
 
 # 5) Comments
@@ -75,7 +74,7 @@ Push logic to where the data lives; avoid anemic domain models for core logic.
 
 Use exceptions over error codes; keep happy path clear.
 Fail fast and close to the source. Log once at the boundary, not everywhere.
-Don’t return null or accept null casually—use Option/Optional/Result where available.
+Don't return null or accept null casually—use Option/Optional/Result where available.
 Wrap third‑party exceptions at boundaries to protect the domain from leakage.
 
 # 9) Boundaries & Interfaces
@@ -107,7 +106,7 @@ Design for timeouts, retries, idempotency at integration boundaries.
 Long functions/classes/files → Refactor by responsibility.
 Deep nesting, multiple if/switch on the same concept → Polymorphism or lookup tables.
 Shotgun surgery (one change touches many places) → Improve cohesion.
-Feature envy (method uses another object’s data extensively) → Move method.
+Feature envy (method uses another object's data extensively) → Move method.
 Primitive obsession → Introduce types/value objects.
 Duplicate code → Extract and reuse.
 Boolean flags that change behavior → Split into separate functions/types.
@@ -117,7 +116,7 @@ Boolean flags that change behavior → Split into separate functions/types.
 Same source code for dev/test/prod; differences expressed via configuration (.env, flags, manifests). Never fork logic by environment.
 Local dev should not require access to live systems; provide seed data and test doubles.
 Avoid ad‑hoc one‑off scripts in the repo; when needed, place them under /tools with docs and cleanup plan.
-Never overwrite another developer’s environment files; provide example templates (e.g., .env.example).
+Never overwrite another developer's environment files; provide example templates (e.g., .env.example).
 
 # 15) Frontend/JS/CSS Guidelines
 
@@ -134,7 +133,7 @@ Python: use virtual environments; type hints (PEP 484) on public functions.
 
 # 17) Introducing New Tech/Patterns (safety rail)
 
-Don’t introduce new frameworks/patterns during bug fixes. First, exhaust options within the current approach. If replacement is justified, propose a small RFC/ADR: rationale, impact, migration, rollback.
+Don't introduce new frameworks/patterns during bug fixes. First, exhaust options within the current approach. If replacement is justified, propose a small RFC/ADR: rationale, impact, migration, rollback.
 
 When replacing, remove the old path to avoid duplicate logic. Plan the migration and cleanup in the same issue/PR series.
 

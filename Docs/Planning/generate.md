@@ -201,4 +201,3 @@ structure:
 ├── Implementation.md
 ├── Project_structure.md
 └── UI_UX_doc.md
-```

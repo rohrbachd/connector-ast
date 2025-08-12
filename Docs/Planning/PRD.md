@@ -9,7 +9,7 @@
 
 **Goal.** Build a lightweight, standards‑first connector to participate in IDSA/Gaia‑X‑aligned dataspaces with minimal footprint and maximum developer ergonomics. The connector interoperates via the **Dataspace Protocol (DSP)**, uses **verifiable credentials (VCs)** for trust, treats **applications/services as first‑class assets**, and keeps a strict **control‑ vs data‑plane** split. Cloud/edge/on‑prem friendly; extensible across industries.
 
-**Non‑goals.** We do **not** replace DSP, the EUDI Wallet, or Gaia‑X Federation Services (GXFS/XFSC); we don’t invent new crypto; we don’t bake in sector semantics.
+**Non‑goals.** We do **not** replace DSP, the EUDI Wallet, or Gaia‑X Federation Services (GXFS/XFSC); we don't invent new crypto; we don't bake in sector semantics.
 
 **Core principles.**
 
@@ -19,7 +19,7 @@
     
 - **Decentralized by default.** No mandatory central broker; federated catalogs and peer‑to‑peer capability.
     
-- **Apps and Services are first‑class.** Besides “data provider,” model “**service provider**” (application/API/compute‑to‑data) with the same lifecycle as datasets.
+- **Apps and Services are first‑class.** Besides "data provider," model "**service provider**" (application/API/compute‑to‑data) with the same lifecycle as datasets.
     
 - **Semantic by design.** JSON‑LD/RDF for metadata; SHACL for shapes; optional NGSI‑LD profile.
     
@@ -158,7 +158,7 @@
 
 * **F5.12** JSON‑LD metadata; DCAT‑AP profile for datasets; NGSI‑LD profile for live context.
     
-* **F5.13** **SHACL** validation for offers and payload metadata; reject offers that don’t match shapes.
+* **F5.13** **SHACL** validation for offers and payload metadata; reject offers that don't match shapes.
     
 * **F5.14** Content negotiation by profile (Accept‑Profile) for DP where applicable.
 
@@ -499,7 +499,7 @@ Find via catalog; negotiate; use signed URL/stream token or invocation token; if
 
 - Create a standing agreement for **daily weather data** covering `region=DE` with 365‑day validity.
     
-    - Retrieve today’s asset with **no renegotiation**: **(1)** `POST /dsp/tickets` → **(2)** `GET <signed URL>`.
+    - Retrieve today's asset with **no renegotiation**: **(1)** `POST /dsp/tickets` → **(2)** `GET <signed URL>`.
         
     - Schedule periodic pulls at 05:00 CET via `POST /dsp/subscriptions` with `RRULE:FREQ=DAILY;BYHOUR=5;BYMINUTE=0`.
         
@@ -571,7 +571,7 @@ Find via catalog; negotiate; use signed URL/stream token or invocation token; if
 
 - **Roles & Responsibilities**: Dataspace Operator, Participant, Service Providers captured as personas; onboarding uses trust anchors and VC evidence; rules are documented as **Policy Packs** and **Operator Handbook**.
     
-- **Governance & Processes**: Draft→Publish lifecycle for assets/offers; **evidence bundle** covers duty receipts & telemetry to act as “clearing/evidence” record; catalog discovery via DSP.
+- **Governance & Processes**: Draft→Publish lifecycle for assets/offers; **evidence bundle** covers duty receipts & telemetry to act as "clearing/evidence" record; catalog discovery via DSP.
     
 - **Legal/Contractual**: **ODRL policy** embedded in ContractOffer; Agreements pin **policy hash**; renewals & revocations modeled.
     
@@ -597,137 +597,4 @@ P1 Service/App Developer • P2 Data Product Owner • P3 Consumer • P4 Datasp
 
 ### Representative User Stories & Acceptance
 
-* **P1‑1** Publish HTTP API as Service Offer (OpenAPI + ODRL); catalog entry passes SHACL; counter‑offer template generated.
-* **P1‑2** DP enforces rate/purpose; receipts for `notify`/`count` duties.
-* **P1‑3** Local dev loop: `docker compose up`; `spctl dev issue-token`.
-* **P2‑1** Publish dataset with DCAT‑AP + ODRL; fail fast on shape violations.
-* **P2‑2** S3/MQTT adapters configured ≤20 lines; retention/geo enforced.
-* **P2‑3** Proof‑of‑deletion receipts for time‑bounded access.
-* **P3‑1** Discover by semantic tag; negotiate in ≤2 round‑trips using defaults.
-* **P3‑2** Invoke compute‑to‑data; results streamed with correlation ID.
-* **P4‑1** Trust anchors + policy packs with versioning and staged rollout.
-* **P4‑2** Run DSP TCK; export signed results.
-* **P5‑1** Same artifact on K8s & edge; Helm + systemd.
-* **P5‑2** Zero‑downtime CP upgrades (blue/green); DP preserves state.
-* **P6‑1** Evidence bundle export (policy hash, duty receipts, telemetry excerpts).
-* **P6‑2** PII‑aware logging with who/what/when/why/where.
-* **P7‑1** Integrate wallet/verifier; map claims→roles.
-* **P7‑2** Rotate keys; JWKS with `kid` pinning.
-
-#### P1 – Service/App Developer
-
-- **US‑P1‑1**: _As a Service Developer, I want to publish my HTTP API as a Service Offer with an ODRL policy so that consumers can negotiate access._
-    
-    - **Acceptance**:
-        
-        - `spctl publish service` accepts `service.yaml` with OpenAPI URL + ODRL block.
-            
-        - Catalog shows the offer with JSON‑LD context and SHACL‑validated shape.
-            
-        - A default counter‑offer template is auto‑generated if constraints conflict.
-            
-- **US‑P1‑2**: _I want the DP to enforce rate limits and purpose constraints for my service._
-    
-    - **Acceptance**:
-        
-        - DP injects a sidecar/proxy that verifies invocation tokens bound to Agreement ID and performs configurable rate limiting.
-            
-        - Duties `notify` and `count` generate receipts written to the activity log.
-            
-- **US‑P1‑3**: _I want a local dev loop._
-    
-    - **Acceptance**: `docker compose up` launches CP+DP and a mock verifier; `spctl dev issue‑token` mints test tokens.
-        
-
-#### P2 – Data Product Owner
-
-- **US‑P2‑1**: _Publish a dataset with DCAT‑AP metadata and ODRL policy; validate via SHACL._
-    
-    - **Acceptance**: `spctl publish dataset dataset.yaml` fails fast on shape violations; success creates a catalog entry and versioned offer.
-        
-- **US‑P2‑2**: _Expose S3 and MQTT sources through adapters with minimal config._
-    
-    - **Acceptance**: S3/MQTT adapters configured in ≤20 lines YAML; DP enforces retention and geographic constraints.
-        
-- **US‑P2‑3**: _Proof of deletion for time‑bounded access._
-    
-    - **Acceptance**: Duty executor emits signed deletion receipts.
-        
-
-#### P3 – Consumer (Analyst/Engineer)
-
-- **US‑P3‑1**: _Discover and negotiate access using defaults._
-    
-    - **Acceptance**: `GET /dsp/catalog?tag=traffic&purpose=research` returns offers; `POST /dsp/negotiations` with template policy yields agreement in ≤2 round‑trips.
-        
-- **US‑P3‑2**: _Invoke a remote service (compute‑to‑data) and retrieve results._
-    
-    - **Acceptance**: `POST /dsp/transfers` with `type=service-invoke` returns invocation token; DP proxy forwards to provider API; results streamed with correlation ID.
-        
-
-#### P4 – Dataspace Operator
-
-- **US‑P4‑1**: _Define trust anchors and a policy catalog (allowed purposes, geo, duty packs)._
-    
-    - **Acceptance**: Admin API `POST /admin/trust‑anchors`, `POST /admin/policy‑packs` with versioning and staged rollout.
-        
-- **US‑P4‑2**: _Run conformance and publish interop status._
-    
-    - **Acceptance**: `spctl conformance run` executes DSP TCK; results signed and exportable.
-        
-
-#### P5 – Platform/Cloud‑Edge Operator
-
-- **US‑P5‑1**: _Install on K8s and edge with the same artifact._
-    
-    - **Acceptance**: Helm chart deploys CP/DP with optional adapters; single‑binary tarball for edge installs with systemd unit template.
-        
-- **US‑P5‑2**: _Upgrade with zero downtime for CP._
-    
-    - **Acceptance**: Blue/green CP supported; DP preserves transfer state.
-        
-
-#### P6 – Security & Compliance Officer
-
-- **US‑P6‑1**: _Produce an evidence bundle for an agreement._
-    
-    - **Acceptance**: `GET /admin/evidence/{agreementId}` returns policy hash, duty receipts, and telemetry excerpts.
-        
-- **US‑P6‑2**: _PII‑aware logging._
-    
-    - **Acceptance**: Redaction rules declarative; default on; audit log includes who, what, when, why (purpose), where (geo).
-        
-
-#### P7 – Enterprise IAM Admin
-
-- **US‑P7‑1**: _Integrate EUDI wallet/verifier and map attributes to roles._
-    
-    - **Acceptance**: OID4VP verifier config with trust store; mapping file translates claims to roles (`ServiceProvider`, `DataProvider`, `ResearchOrg`).
-        
-- **US‑P7‑2**: _Rotate keys and expose JWKS._
-    
-    - **Acceptance**: `POST /admin/keys/rotate` updates active key; DP validates via JWKS cache; JWKS endpoint supports `kid` pinning.
-
-## B. Realtime Subscriptions & Watermarks (Detail)
-
-* Agreement types: one‑shot vs **standing**. Selector kinds: IDs • tags/semantics • query • temporal coverage.
-* Modes: batch pull; push/notify; stream; request/response service.
-* **Tickets:** short‑lived PoP tokens; **Watermarks:** DP cursors; **Usage:** counters/quota API.
-* Scheduler SLOs: drift <±30s (light), <±2m (heavy); ticket TTL 5m; idempotency by `(agreementId, assetId)`.
-
-## C. Examples (Additional)
-
-* Standing agreement subscription YAML (daily weather).
-* Minimal service offer + policy pack (see §8).
-
-## D. Threat Model & Controls (Expanded)
-
-* Attack surface, mitigations, and test hooks for evidence.
-
-## E. Compliance Crosswalk (RAM/Rulebook/Gaia‑X)
-
-* Traceable mapping table (Req → Test → Evidence).
-
-## F. Glossary
-
-* CP, DP, DSP, ODRL, DCAT‑AP, NGSI‑LD, VC, OID4VP/OID4VCI, SHACL, Selector, Ticket, Watermark, Policy Pack, Reciprocal Agreement.
+* **P1‑1** Publish HTTP API
