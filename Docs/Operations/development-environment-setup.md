@@ -5,12 +5,14 @@
 ### System Requirements
 
 **Minimum Requirements:**
+
 - **OS:** Windows 10/11, macOS 12+, or Linux (Ubuntu 20.04+)
 - **RAM:** 8GB (16GB recommended)
 - **Storage:** 20GB free space
 - **CPU:** 4 cores (8 cores recommended)
 
 **Required Software:**
+
 - **Node.js:** 20.x LTS
 - **pnpm:** 8.x
 - **Docker:** 24.x with Docker Compose
@@ -40,6 +42,7 @@ pnpm --version  # Should show 8.x.x
 #### 2. Docker Installation
 
 **Linux (Ubuntu/Debian):**
+
 ```bash
 # Install Docker
 curl -fsSL https://get.docker.com -o get-docker.sh
@@ -56,6 +59,7 @@ docker-compose --version
 ```
 
 **macOS:**
+
 ```bash
 # Install Docker Desktop
 brew install --cask docker
@@ -64,6 +68,7 @@ brew install --cask docker
 ```
 
 **Windows:**
+
 - Download Docker Desktop from https://www.docker.com/products/docker-desktop
 - Enable WSL2 integration if using Windows
 
@@ -170,14 +175,14 @@ services:
       POSTGRES_DB: connector_dev
       POSTGRES_USER: connector
       POSTGRES_PASSWORD: dev_password
-      POSTGRES_INITDB_ARGS: "--encoding=UTF-8"
+      POSTGRES_INITDB_ARGS: '--encoding=UTF-8'
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - postgres_dev_data:/var/lib/postgresql/data
       - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U connector -d connector_dev"]
+      test: ['CMD-SHELL', 'pg_isready -U connector -d connector_dev']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -188,11 +193,11 @@ services:
     container_name: connector-redis-dev
     command: redis-server --requirepass dev_redis_password --appendonly yes
     ports:
-      - "6379:6379"
+      - '6379:6379'
     volumes:
       - redis_dev_data:/data
     healthcheck:
-      test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "dev_redis_password", "ping"]
+      test: ['CMD', 'redis-cli', '--no-auth-warning', '-a', 'dev_redis_password', 'ping']
       interval: 10s
       timeout: 5s
       retries: 3
@@ -204,11 +209,11 @@ services:
     environment:
       ADMIN_PASSWORD: dev_fuseki_password
     ports:
-      - "3030:3030"
+      - '3030:3030'
     volumes:
       - fuseki_dev_data:/fuseki
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3030/$/ping"]
+      test: ['CMD', 'curl', '-f', 'http://localhost:3030/$/ping']
       interval: 30s
       timeout: 10s
       retries: 3
@@ -218,9 +223,9 @@ services:
     image: node:20-alpine
     container_name: connector-mock-wallet
     working_dir: /app
-    command: ["npm", "run", "dev"]
+    command: ['npm', 'run', 'dev']
     ports:
-      - "8080:8080"
+      - '8080:8080'
     volumes:
       - ./tools/mock-wallet:/app
       - /app/node_modules
@@ -235,9 +240,9 @@ services:
     image: node:20-alpine
     container_name: connector-mock-peer
     working_dir: /app
-    command: ["npm", "run", "dev"]
+    command: ['npm', 'run', 'dev']
     ports:
-      - "4000:4000"
+      - '4000:4000'
     volumes:
       - ./tools/mock-peer:/app
       - /app/node_modules
@@ -250,8 +255,8 @@ services:
     image: jaegertracing/all-in-one:latest
     container_name: connector-jaeger-dev
     ports:
-      - "16686:16686"  # Jaeger UI
-      - "14268:14268"  # HTTP collector
+      - '16686:16686' # Jaeger UI
+      - '14268:14268' # HTTP collector
     environment:
       COLLECTOR_OTLP_ENABLED: true
 
@@ -260,7 +265,7 @@ services:
     image: prom/prometheus:latest
     container_name: connector-prometheus-dev
     ports:
-      - "9091:9090"  # Avoid conflict with app metrics port
+      - '9091:9090' # Avoid conflict with app metrics port
     volumes:
       - ./config/prometheus-dev.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus_dev_data:/prometheus
@@ -275,7 +280,7 @@ services:
     image: grafana/grafana:latest
     container_name: connector-grafana-dev
     ports:
-      - "3003:3000"
+      - '3003:3000'
     environment:
       GF_SECURITY_ADMIN_PASSWORD: dev_grafana_password
     volumes:
@@ -573,11 +578,11 @@ Create `.vscode/tasks.json`:
     "dev:services": "docker-compose -f docker-compose.dev.yml up -d",
     "dev:services:stop": "docker-compose -f docker-compose.dev.yml down",
     "dev:wait-for-services": "wait-on tcp:5432 tcp:6379 tcp:3030",
-    
+
     "build": "turbo run build",
     "build:packages": "turbo run build --filter='./packages/*'",
     "build:apps": "turbo run build --filter='./apps/*'",
-    
+
     "test": "vitest run",
     "test:unit": "vitest run --config vitest.unit.config.ts",
     "test:integration": "vitest run --config vitest.integration.config.ts",
@@ -586,23 +591,23 @@ Create `.vscode/tasks.json`:
     "test:coverage": "vitest run --coverage",
     "test:debug": "vitest --inspect-brk --no-coverage",
     "test:performance": "k6 run tests/performance/load-test.js",
-    
+
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "type-check": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    
+
     "db:migrate": "prisma migrate dev",
     "db:rollback": "prisma migrate reset",
     "db:reset": "prisma migrate reset --force",
     "db:seed": "tsx scripts/seed-dev-data.ts",
     "db:studio": "prisma studio",
     "db:setup": "pnpm db:migrate && pnpm db:seed",
-    
+
     "setup:certs": "tsx scripts/generate-dev-certs.ts",
     "setup:dev": "pnpm install && pnpm setup:certs && pnpm dev:services && pnpm db:setup",
-    
+
     "clean": "rimraf dist coverage .turbo",
     "clean:deps": "rimraf node_modules packages/*/node_modules apps/*/node_modules",
     "clean:all": "pnpm clean && pnpm clean:deps"
@@ -624,32 +629,29 @@ import { join } from 'path';
 
 const program = new Command();
 
-program
-  .name('dev-utils')
-  .description('Development utilities for Connector AST')
-  .version('1.0.0');
+program.name('dev-utils').description('Development utilities for Connector AST').version('1.0.0');
 
 program
   .command('reset')
   .description('Reset development environment')
   .action(async () => {
     console.log('🔄 Resetting development environment...');
-    
+
     // Stop services
     execSync('docker-compose -f docker-compose.dev.yml down -v', { stdio: 'inherit' });
-    
+
     // Clean build artifacts
     execSync('pnpm clean', { stdio: 'inherit' });
-    
+
     // Reinstall dependencies
     execSync('pnpm install', { stdio: 'inherit' });
-    
+
     // Start services
     execSync('pnpm dev:services', { stdio: 'inherit' });
-    
+
     // Setup database
     execSync('pnpm db:setup', { stdio: 'inherit' });
-    
+
     console.log('✅ Development environment reset complete!');
   });
 
@@ -657,19 +659,19 @@ program
   .command('generate-test-data')
   .description('Generate test data for development')
   .option('-c, --count <number>', 'Number of records to generate', '10')
-  .action(async (options) => {
+  .action(async options => {
     const count = parseInt(options.count);
     console.log(`📊 Generating ${count} test records...`);
-    
+
     // Generate test participants, assets, policies, etc.
     const testData = generateTestData(count);
-    
+
     // Save to file
     writeFileSync(
       join(process.cwd(), 'tests/fixtures/test-data.json'),
-      JSON.stringify(testData, null, 2)
+      JSON.stringify(testData, null, 2),
     );
-    
+
     console.log('✅ Test data generated successfully!');
   });
 
@@ -683,11 +685,11 @@ program
       { name: 'Fuseki', port: 3030 },
       { name: 'Jaeger', port: 16686 },
       { name: 'Prometheus', port: 9091 },
-      { name: 'Grafana', port: 3003 }
+      { name: 'Grafana', port: 3003 },
     ];
-    
+
     console.log('🔍 Checking development services...\n');
-    
+
     for (const service of services) {
       try {
         execSync(`nc -z localhost ${service.port}`, { stdio: 'pipe' });
@@ -705,14 +707,14 @@ function generateTestData(count: number) {
       id: `participant-${i + 1}`,
       did: `did:web:localhost:300${i % 10}`,
       name: `Test Participant ${i + 1}`,
-      roles: ['DataProvider', 'ServiceProvider']
+      roles: ['DataProvider', 'ServiceProvider'],
     })),
     assets: Array.from({ length: count * 2 }, (_, i) => ({
       id: `asset-${i + 1}`,
       title: `Test Asset ${i + 1}`,
       type: i % 2 === 0 ? 'dataset' : 'service',
-      participantId: `participant-${Math.floor(i / 2) + 1}`
-    }))
+      participantId: `participant-${Math.floor(i / 2) + 1}`,
+    })),
   };
 }
 
@@ -737,17 +739,10 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      exclude: [
-        'node_modules/',
-        'dist/',
-        'coverage/',
-        '**/*.d.ts',
-        '**/*.config.*',
-        '**/tests/**'
-      ]
+      exclude: ['node_modules/', 'dist/', 'coverage/', '**/*.d.ts', '**/*.config.*', '**/tests/**'],
     },
     testTimeout: 10000,
-    hookTimeout: 10000
+    hookTimeout: 10000,
   },
   resolve: {
     alias: {
@@ -758,9 +753,9 @@ export default defineConfig({
       '@policy': resolve(__dirname, './packages/policy/src'),
       '@catalog': resolve(__dirname, './packages/catalog/src'),
       '@transport': resolve(__dirname, './packages/transport/src'),
-      '@common': resolve(__dirname, './packages/common/src')
-    }
-  }
+      '@common': resolve(__dirname, './packages/common/src'),
+    },
+  },
 });
 ```
 
@@ -781,11 +776,11 @@ beforeAll(async () => {
   // Setup test database
   process.env.DATABASE_URL = 'postgresql://connector:test_password@localhost:5432/connector_test';
   process.env.REDIS_URL = 'redis://localhost:6379/1'; // Use DB 1 for tests
-  
+
   // Initialize connections
   database = new Database(process.env.DATABASE_URL);
   redis = new Redis(process.env.REDIS_URL);
-  
+
   // Run migrations
   execSync('pnpm db:migrate', { env: { ...process.env, DATABASE_URL: process.env.DATABASE_URL } });
 });
@@ -798,8 +793,10 @@ afterAll(async () => {
 
 beforeEach(async () => {
   // Clean database before each test
-  await database.query('TRUNCATE TABLE participants, assets, policies, offers, contract_negotiations, contract_agreements, transfer_processes CASCADE');
-  
+  await database.query(
+    'TRUNCATE TABLE participants, assets, policies, offers, contract_negotiations, contract_agreements, transfer_processes CASCADE',
+  );
+
   // Clear Redis
   await redis.flushdb();
 });

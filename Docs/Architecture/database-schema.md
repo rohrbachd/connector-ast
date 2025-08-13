@@ -13,6 +13,7 @@ The connector uses a multi-store approach optimized for different data types and
 ### Core Domain Tables
 
 #### 1. Participants Table
+
 Stores information about dataspace participants.
 
 ```sql
@@ -42,6 +43,7 @@ CREATE INDEX idx_participants_metadata ON participants USING GIN(metadata);
 ```
 
 #### 2. Assets Table
+
 Stores dataset and service asset definitions.
 
 ```sql
@@ -93,6 +95,7 @@ CREATE INDEX idx_assets_search ON assets USING GIN(
 ```
 
 #### 3. Services Table (Extension of Assets)
+
 Additional service-specific metadata.
 
 ```sql
@@ -119,6 +122,7 @@ CREATE INDEX idx_services_endpoint ON services(endpoint_url);
 ```
 
 #### 4. Policies Table
+
 ODRL policy definitions with versioning.
 
 ```sql
@@ -141,7 +145,7 @@ CREATE TABLE policies (
     effective_until TIMESTAMP WITH TIME ZONE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    
+
     UNIQUE(external_id, version)
 );
 
@@ -154,6 +158,7 @@ CREATE INDEX idx_policies_effective ON policies(effective_from, effective_until)
 ```
 
 #### 5. Offers Table
+
 Contract offers combining assets and policies.
 
 ```sql
@@ -190,6 +195,7 @@ CREATE INDEX idx_offers_audience ON offers USING GIN(target_audience);
 ### Contract Management Tables
 
 #### 6. Contract Negotiations Table
+
 DSP contract negotiation state machine.
 
 ```sql
@@ -223,6 +229,7 @@ CREATE INDEX idx_negotiations_correlation ON contract_negotiations(correlation_i
 ```
 
 #### 7. Contract Agreements Table
+
 Finalized agreements (immutable).
 
 ```sql
@@ -260,6 +267,7 @@ CREATE INDEX idx_agreements_reciprocal ON contract_agreements(reciprocal_agreeme
 ### Transfer Management Tables
 
 #### 8. Transfer Processes Table
+
 Data transfer and service invocation tracking.
 
 ```sql
@@ -296,6 +304,7 @@ CREATE INDEX idx_transfers_correlation ON transfer_processes(correlation_id);
 ```
 
 #### 9. Subscriptions Table
+
 Standing agreements and real-time subscriptions.
 
 ```sql
@@ -329,6 +338,7 @@ CREATE INDEX idx_subscriptions_next_execution ON subscriptions(next_execution);
 ### Identity and Trust Tables
 
 #### 10. Trust Anchors Table
+
 Trusted certificate authorities and issuers.
 
 ```sql
@@ -356,6 +366,7 @@ CREATE INDEX idx_trust_anchors_framework ON trust_anchors(trust_framework);
 ```
 
 #### 11. Verifiable Credentials Cache
+
 Cache for verified credentials and presentations.
 
 ```sql
@@ -385,6 +396,7 @@ CREATE INDEX idx_credentials_status ON credential_cache(revocation_status);
 ### Observability and Audit Tables
 
 #### 12. Usage Records Table
+
 Track usage for billing and compliance.
 
 ```sql
@@ -418,6 +430,7 @@ CREATE TABLE usage_records_y2024m01 PARTITION OF usage_records
 ```
 
 #### 13. Duty Receipts Table
+
 Track execution of ODRL obligations.
 
 ```sql
@@ -443,6 +456,7 @@ CREATE INDEX idx_duty_receipts_hash ON duty_receipts(receipt_hash);
 ```
 
 #### 14. Audit Log Table
+
 Comprehensive audit trail.
 
 ```sql
@@ -480,32 +494,32 @@ CREATE TABLE audit_log_y2024m01 PARTITION OF audit_log
 
 ```typescript
 // Session and authentication
-"session:{sessionId}" // User session data
-"jwt:blacklist:{jti}" // Blacklisted JWT tokens
-"rate_limit:{participantId}:{endpoint}" // Rate limiting counters
+'session:{sessionId}'; // User session data
+'jwt:blacklist:{jti}'; // Blacklisted JWT tokens
+'rate_limit:{participantId}:{endpoint}'; // Rate limiting counters
 
 // Policy decisions cache
-"policy:decision:{policyHash}:{contextHash}" // Cached policy decisions
-"policy:conflicts:{policyId}" // Conflict resolution results
+'policy:decision:{policyHash}:{contextHash}'; // Cached policy decisions
+'policy:conflicts:{policyId}'; // Conflict resolution results
 
 // Credential verification cache
-"vc:verification:{credentialId}" // Verification results
-"did:document:{did}" // Resolved DID documents
+'vc:verification:{credentialId}'; // Verification results
+'did:document:{did}'; // Resolved DID documents
 
 // Transfer state cache
-"transfer:state:{transferId}" // Transfer process state
-"transfer:progress:{transferId}" // Transfer progress tracking
+'transfer:state:{transferId}'; // Transfer process state
+'transfer:progress:{transferId}'; // Transfer progress tracking
 
 // Subscription watermarks
-"subscription:watermark:{subscriptionId}" // Last processed position
+'subscription:watermark:{subscriptionId}'; // Last processed position
 
 // Usage counters
-"usage:counter:{agreementId}:{metric}" // Real-time usage counters
-"usage:quota:{agreementId}" // Quota tracking
+'usage:counter:{agreementId}:{metric}'; // Real-time usage counters
+'usage:quota:{agreementId}'; // Quota tracking
 
 // Temporary data
-"temp:ticket:{ticketId}" // Short-lived access tickets
-"temp:challenge:{challengeId}" // Authentication challenges
+'temp:ticket:{ticketId}'; // Short-lived access tickets
+'temp:challenge:{challengeId}'; // Authentication challenges
 ```
 
 ### Redis Data Structures
@@ -598,7 +612,7 @@ export abstract class BaseEntity {
   id: string;
   createdAt: Date;
   updatedAt: Date;
-  
+
   constructor(id?: string) {
     this.id = id || crypto.randomUUID();
     this.createdAt = new Date();
@@ -696,14 +710,14 @@ export class ContractAgreement extends BaseEntity {
 ```typescript
 export enum AssetType {
   DATASET = 'dataset',
-  SERVICE = 'service'
+  SERVICE = 'service',
 }
 
 export enum AssetStatus {
   DRAFT = 'draft',
   PUBLISHED = 'published',
   DEPRECATED = 'deprecated',
-  ARCHIVED = 'archived'
+  ARCHIVED = 'archived',
 }
 
 export enum NegotiationState {
@@ -713,7 +727,7 @@ export enum NegotiationState {
   AGREED = 'AGREED',
   VERIFIED = 'VERIFIED',
   FINALIZED = 'FINALIZED',
-  TERMINATED = 'TERMINATED'
+  TERMINATED = 'TERMINATED',
 }
 
 export enum TransferState {
@@ -721,14 +735,14 @@ export enum TransferState {
   STARTED = 'STARTED',
   COMPLETED = 'COMPLETED',
   SUSPENDED = 'SUSPENDED',
-  TERMINATED = 'TERMINATED'
+  TERMINATED = 'TERMINATED',
 }
 
 export enum TransferType {
   PULL = 'pull',
   PUSH = 'push',
   STREAM = 'stream',
-  SERVICE = 'service'
+  SERVICE = 'service',
 }
 ```
 

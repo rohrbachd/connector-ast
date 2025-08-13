@@ -3,14 +3,16 @@
 ## Recommended Tech Stack
 
 ### Core Framework & Runtime
+
 - **Node.js 20 LTS** - Latest stable with excellent TypeScript support
 - **TypeScript 5.3+** - Strict mode enabled, latest features for type safety
 - **Documentation:** https://nodejs.org/docs/latest-v20.x/api/
 - **TypeScript Docs:** https://www.typescriptlang.org/docs/
 
 ### Web Framework (Control Plane)
+
 - **Fastify 4.x** - High performance, TypeScript-first, excellent plugin ecosystem
-- **Justification:** 
+- **Justification:**
   - Superior performance vs Express (2-3x faster)
   - Built-in TypeScript support
   - Excellent JSON schema validation
@@ -19,13 +21,15 @@
 - **Documentation:** https://www.fastify.io/docs/latest/
 
 ### Data Plane Framework
+
 - **Fastify 4.x** - Same as CP for consistency
 - **Alternative consideration:** Custom HTTP server with `http2` module for streaming
 - **Justification:** Unified codebase, shared middleware, consistent patterns
 
 ### Database Layer
+
 - **Primary (Metadata):** **PostgreSQL 15+** with **Prisma ORM**
-  - **Justification:** 
+  - **Justification:**
     - JSON/JSONB support for JSON-LD metadata
     - ACID compliance for agreements
     - Excellent TypeScript integration with Prisma
@@ -42,6 +46,7 @@
   - **Documentation:** https://redis.io/docs/
 
 ### Authentication & Security
+
 - **JWT/JOSE:** **jose** library (Web Cryptography API based)
   - **Justification:** Modern, secure, standards-compliant
   - **Documentation:** https://github.com/panva/jose
@@ -55,6 +60,7 @@
   - **Documentation:** https://veramo.io/docs/
 
 ### JSON-LD & Semantic Processing
+
 - **JSON-LD:** **jsonld** library
   - **Justification:** Reference implementation, comprehensive features
   - **Documentation:** https://github.com/digitalbazaar/jsonld.js
@@ -64,6 +70,7 @@
   - **Documentation:** https://github.com/zazuko/rdf-validate-shacl
 
 ### HTTP Client & Transport
+
 - **HTTP Client:** **undici** (Node.js native)
   - **Justification:** High performance, HTTP/2 support, Node.js core team maintained
   - **Documentation:** https://undici.nodejs.org/
@@ -73,6 +80,7 @@
   - **Documentation:** https://github.com/websockets/ws
 
 ### Message Queue & Streaming
+
 - **Message Queue:** **BullMQ** with Redis
   - **Justification:** Robust job processing, retry logic, observability
   - **Documentation:** https://docs.bullmq.io/
@@ -82,6 +90,7 @@
   - **Documentation:** https://kafka.js.org/docs/
 
 ### Observability & Monitoring
+
 - **Telemetry:** **@opentelemetry/api** + **@opentelemetry/auto-instrumentations-node**
   - **Justification:** Industry standard, comprehensive instrumentation
   - **Documentation:** https://opentelemetry.io/docs/instrumentation/js/
@@ -95,6 +104,7 @@
   - **Documentation:** https://github.com/siimon/prom-client
 
 ### Validation & Schema
+
 - **JSON Schema:** **ajv** (built into Fastify)
   - **Justification:** Fast, comprehensive JSON Schema validation
   - **Documentation:** https://ajv.js.org/
@@ -104,6 +114,7 @@
   - **Documentation:** https://zod.dev/
 
 ### Testing Framework
+
 - **Test Runner:** **Vitest**
   - **Justification:** Fast, TypeScript native, excellent DX
   - **Documentation:** https://vitest.dev/guide/
@@ -113,6 +124,7 @@
   - **Documentation:** https://github.com/visionmedia/supertest
 
 ### Build & Development Tools
+
 - **Build Tool:** **tsup**
   - **Justification:** Fast TypeScript bundler, zero config
   - **Documentation:** https://tsup.egoist.dev/
@@ -130,6 +142,7 @@
   - **Documentation:** https://prettier.io/docs/
 
 ### Container & Deployment
+
 - **Container:** **Docker** with multi-stage builds
   - **Base Image:** `node:20-alpine` for production
   - **Documentation:** https://docs.docker.com/
@@ -140,6 +153,7 @@
   - **Helm Docs:** https://helm.sh/docs/
 
 ### Cloud Storage Adapters
+
 - **AWS SDK:** **@aws-sdk/client-s3**
   - **Justification:** Official AWS SDK v3, tree-shakeable
   - **Documentation:** https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/
@@ -149,6 +163,7 @@
   - **Documentation:** https://docs.microsoft.com/en-us/javascript/api/@azure/storage-blob/
 
 ### Additional Utilities
+
 - **Configuration:** **convict** or **@nestjs/config**
   - **Justification:** Type-safe configuration management
   - **Documentation:** https://github.com/mozilla/node-convict
@@ -160,6 +175,7 @@
 ## Architecture Decisions
 
 ### Design Patterns
+
 - **Dependency Injection:** Custom lightweight DI container
 - **Event-Driven:** Event emitters for internal communication
 - **Plugin Architecture:** Fastify plugins for extensibility
@@ -167,12 +183,14 @@
 - **Strategy Pattern:** Transport adapters and policy executors
 
 ### Performance Considerations
+
 - **Connection Pooling:** PostgreSQL and Redis connection pools
 - **Caching Strategy:** Multi-level caching (Redis + in-memory)
 - **Streaming:** Node.js streams for large data transfers
 - **Async/Await:** Throughout for non-blocking operations
 
 ### Security Considerations
+
 - **Input Validation:** All inputs validated with JSON Schema/Zod
 - **Rate Limiting:** Built-in rate limiting with Redis
 - **CORS:** Configurable CORS policies
@@ -180,12 +198,14 @@
 - **Secrets Management:** Environment variables + optional Vault integration
 
 ### Scalability Considerations
+
 - **Stateless Design:** CP is completely stateless
 - **Horizontal Scaling:** Load balancer ready
 - **Database Sharding:** Prepared for future sharding
 - **Microservices Ready:** Clear service boundaries
 
 ## Development Environment
+
 - **Package Manager:** **pnpm** for faster installs and better dependency management
 - **Node Version Manager:** **nvm** or **fnm**
 - **IDE:** VS Code with TypeScript extensions
@@ -194,6 +214,7 @@
 ## Justification Summary
 
 This stack prioritizes:
+
 1. **Performance:** Fastify, undici, pino for high throughput
 2. **Type Safety:** TypeScript strict mode, Prisma, Zod
 3. **Standards Compliance:** Standard libraries for JWT, DID, VC, JSON-LD

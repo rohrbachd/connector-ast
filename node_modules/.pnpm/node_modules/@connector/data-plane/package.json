@@ -1,0 +1,19 @@
+{
+  "name": "@connector/data-plane",
+  "version": "1.0.0",
+  "description": "Data Plane implementation for the Lightweight Dataspace Connector",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist",
+    "lint": "eslint . --ext .ts",
+    "test": "vitest run",
+    "dev": "fastify start -w -l info"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "publishConfig": {
+    "access": "public"
+  }
+}

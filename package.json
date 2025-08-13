@@ -1,0 +1,42 @@
+{
+  "name": "connector-ast",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No tests implemented yet - this is expected in early development phase\"",
+    "lint": "eslint . --ext .ts,.js",
+    "lint:fix": "eslint . --ext .ts,.js --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "build": "echo \"Build not implemented yet\"",
+    "dev": "echo \"Dev server not implemented yet\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.14.0",
+  "devDependencies": {
+    "@eslint/js": "^9.33.0",
+    "@typescript-eslint/eslint-plugin": "^8.39.1",
+    "@typescript-eslint/parser": "^8.39.1",
+    "eslint": "^9.33.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.5.4",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.5",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.39.1"
+  },
+  "dependencies": {
+    "@types/node": "^24.2.1",
+    "commander": "^14.0.0",
+    "convict": "^6.2.4",
+    "fastify": "^5.5.0",
+    "pino": "^9.8.0",
+    "pino-pretty": "^13.1.1"
+  }
+}

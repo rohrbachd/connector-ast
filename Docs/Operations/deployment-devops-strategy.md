@@ -14,14 +14,14 @@ graph TB
         subgraph "Edge/On-prem"
             EdgeNode[Single Node<br/>CP+DP+DB]
         end
-        
+
         subgraph "Standard Cloud"
             CPPods[CP Pods<br/>Stateless]
             DPPods[DP Pods<br/>Near Data]
             ExtDB[(External DB<br/>PostgreSQL)]
             Cache[(Redis Cache)]
         end
-        
+
         subgraph "Scale-out"
             CPCluster[CP Cluster<br/>Multi-Zone]
             DPCluster[DP Cluster<br/>Auto-scaling]
@@ -29,20 +29,20 @@ graph TB
             CacheCluster[(Redis Cluster)]
         end
     end
-    
+
     subgraph "Infrastructure"
         K8s[Kubernetes]
         Docker[Docker]
         Helm[Helm Charts]
         Terraform[Terraform]
     end
-    
+
     EdgeNode --> Docker
     CPPods --> K8s
     DPPods --> K8s
     CPCluster --> K8s
     DPCluster --> K8s
-    
+
     K8s --> Helm
     ExtDB --> Terraform
     DBCluster --> Terraform
@@ -53,6 +53,7 @@ graph TB
 ### 1. Docker Images
 
 #### Multi-stage Build Strategy
+
 ```dockerfile
 # Base image with Node.js and security updates
 FROM node:20-alpine AS base
@@ -103,6 +104,7 @@ CMD ["node", "dist/edge-main.js"]
 ```
 
 #### Image Optimization
+
 - **Multi-stage builds** to minimize final image size
 - **Alpine Linux** base for security and size
 - **Non-root user** for security
@@ -125,29 +127,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Build images
         run: |
           docker build -t connector:cp --target control-plane .
           docker build -t connector:dp --target data-plane .
-      
+
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: 'connector:cp'
           format: 'sarif'
           output: 'trivy-results.sarif'
-      
+
       - name: Upload Trivy scan results
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: 'trivy-results.sarif'
-      
+
       - name: Sign images with Cosign
         uses: sigstore/cosign-installer@v3
         with:
           cosign-release: 'v2.0.0'
-      
+
       - name: Sign container images
         run: |
           cosign sign --yes connector:cp
@@ -507,7 +509,7 @@ resource "helm_release" "connector" {
   name       = "connector"
   chart      = "../../helm/connector"
   namespace  = kubernetes_namespace.connector.metadata[0].name
-  
+
   depends_on = [
     helm_release.postgresql,
     helm_release.redis
@@ -611,7 +613,7 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
-      
+
       redis:
         image: redis:7-alpine
         options: >-
@@ -624,39 +626,39 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'pnpm'
-      
+
       - name: Install pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8
-      
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      
+
       - name: Run linting
         run: pnpm lint
-      
+
       - name: Run type checking
         run: pnpm type-check
-      
+
       - name: Run unit tests
         run: pnpm test:unit
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/connector_test
           REDIS_URL: redis://localhost:6379
-      
+
       - name: Run integration tests
         run: pnpm test:integration
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/connector_test
           REDIS_URL: redis://localhost:6379
-      
+
       - name: Upload coverage reports
         uses: codecov/codecov-action@v3
         with:
@@ -668,20 +670,20 @@ jobs:
     permissions:
       contents: read
       packages: write
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
-      
+
       - name: Log in to Container Registry
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      
+
       - name: Extract metadata
         id: meta
         uses: docker/metadata-action@v5
@@ -693,7 +695,7 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=sha
-      
+
       - name: Build and push Control Plane image
         uses: docker/build-push-action@v5
         with:
@@ -704,7 +706,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      
+
       - name: Build and push Data Plane image
         uses: docker/build-push-action@v5
         with:
@@ -721,22 +723,22 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     environment: staging
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.5.0
-      
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-2
-      
+
       - name: Deploy to staging
         run: |
           cd infrastructure/terraform/environments/staging
@@ -749,35 +751,35 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     environment: production
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: 1.5.0
-      
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-west-2
-      
+
       - name: Deploy to production
         run: |
           cd infrastructure/terraform/environments/production
           terraform init
           terraform plan -var="image_tag=${{ github.ref_name }}"
           terraform apply -auto-approve -var="image_tag=${{ github.ref_name }}"
-      
+
       - name: Run smoke tests
         run: |
           # Wait for deployment to be ready
           kubectl wait --for=condition=available --timeout=300s deployment/connector-cp
           kubectl wait --for=condition=available --timeout=300s deployment/connector-dp
-          
+
           # Run smoke tests
           pnpm test:smoke --endpoint=https://connector.example.com
 ```
@@ -797,10 +799,10 @@ data:
     global:
       scrape_interval: 15s
       evaluation_interval: 15s
-    
+
     rule_files:
       - "connector-rules.yml"
-    
+
     scrape_configs:
       - job_name: 'connector-cp'
         kubernetes_sd_configs:
@@ -928,37 +930,37 @@ kind: CronJob
 metadata:
   name: postgres-backup
 spec:
-  schedule: "0 2 * * *"  # Daily at 2 AM
+  schedule: '0 2 * * *' # Daily at 2 AM
   jobTemplate:
     spec:
       template:
         spec:
           containers:
-          - name: postgres-backup
-            image: postgres:15
-            env:
-            - name: PGPASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: postgresql-secret
-                  key: password
-            command:
-            - /bin/bash
-            - -c
-            - |
-              DATE=$(date +%Y%m%d_%H%M%S)
-              pg_dump -h postgresql -U connector connector > /backup/connector_$DATE.sql
-              # Upload to S3 or other backup storage
-              aws s3 cp /backup/connector_$DATE.sql s3://connector-backups/
-              # Keep only last 30 days of backups locally
-              find /backup -name "connector_*.sql" -mtime +30 -delete
-            volumeMounts:
-            - name: backup-storage
-              mountPath: /backup
+            - name: postgres-backup
+              image: postgres:15
+              env:
+                - name: PGPASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgresql-secret
+                      key: password
+              command:
+                - /bin/bash
+                - -c
+                - |
+                  DATE=$(date +%Y%m%d_%H%M%S)
+                  pg_dump -h postgresql -U connector connector > /backup/connector_$DATE.sql
+                  # Upload to S3 or other backup storage
+                  aws s3 cp /backup/connector_$DATE.sql s3://connector-backups/
+                  # Keep only last 30 days of backups locally
+                  find /backup -name "connector_*.sql" -mtime +30 -delete
+              volumeMounts:
+                - name: backup-storage
+                  mountPath: /backup
           volumes:
-          - name: backup-storage
-            persistentVolumeClaim:
-              claimName: backup-pvc
+            - name: backup-storage
+              persistentVolumeClaim:
+                claimName: backup-pvc
           restartPolicy: OnFailure
 ```
 
@@ -1010,3 +1012,4 @@ kubectl wait --for=condition=complete job/restore-db -n $NAMESPACE --timeout=600
 # 3
 # Scale up applications
 kubectl scale
+```
