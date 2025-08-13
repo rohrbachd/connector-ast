@@ -29,6 +29,7 @@ connector-ast/
 ### Apps Directory
 
 #### Control Plane (`apps/control-plane/`)
+
 ```
 apps/control-plane/
 ├── src/
@@ -79,6 +80,7 @@ apps/control-plane/
 ```
 
 #### Data Plane (`apps/data-plane/`)
+
 ```
 apps/data-plane/
 ├── src/
@@ -112,6 +114,7 @@ apps/data-plane/
 ### Packages Directory
 
 #### Core Package (`packages/core/`)
+
 ```
 packages/core/
 ├── src/
@@ -152,6 +155,7 @@ packages/core/
 ```
 
 #### DSP Protocol Package (`packages/dsp-protocol/`)
+
 ```
 packages/dsp-protocol/
 ├── src/
@@ -182,6 +186,7 @@ packages/dsp-protocol/
 ```
 
 #### Identity Package (`packages/identity/`)
+
 ```
 packages/identity/
 ├── src/
@@ -210,6 +215,7 @@ packages/identity/
 ```
 
 #### Policy Package (`packages/policy/`)
+
 ```
 packages/policy/
 ├── src/
@@ -241,6 +247,7 @@ packages/policy/
 ```
 
 #### Catalog Package (`packages/catalog/`)
+
 ```
 packages/catalog/
 ├── src/
@@ -274,6 +281,7 @@ packages/catalog/
 ```
 
 #### Transport Package (`packages/transport/`)
+
 ```
 packages/transport/
 ├── src/
@@ -305,6 +313,7 @@ packages/transport/
 ```
 
 #### Observability Package (`packages/observability/`)
+
 ```
 packages/observability/
 ├── src/
@@ -333,6 +342,7 @@ packages/observability/
 ```
 
 #### Common Package (`packages/common/`)
+
 ```
 packages/common/
 ├── src/
@@ -373,6 +383,7 @@ packages/common/
 ## Supporting Directories
 
 ### Tools Directory (`tools/`)
+
 ```
 tools/
 ├── build/                         # Build tools
@@ -396,6 +407,7 @@ tools/
 ```
 
 ### Deployment Directory (`deployment/`)
+
 ```
 deployment/
 ├── kubernetes/                    # Kubernetes manifests
@@ -425,6 +437,7 @@ deployment/
 ```
 
 ### Tests Directory (`tests/`)
+
 ```
 tests/
 ├── integration/                   # Integration tests
@@ -447,6 +460,7 @@ tests/
 ```
 
 ### Configuration Directory (`config/`)
+
 ```
 config/
 ├── environments/                  # Environment configs
@@ -471,19 +485,17 @@ config/
 ## Package Management Strategy
 
 ### Monorepo Configuration
+
 - **Tool:** pnpm workspaces for efficient dependency management
 - **Shared Dependencies:** Common dependencies hoisted to root
 - **Independent Versioning:** Each package can be versioned independently
 - **Build Orchestration:** Turborepo for efficient builds and caching
 
 ### Package Dependencies
+
 ```json
 {
-  "workspaces": [
-    "apps/*",
-    "packages/*",
-    "tools/*"
-  ],
+  "workspaces": ["apps/*", "packages/*", "tools/*"],
   "dependencies": {
     "@connector/core": "workspace:*",
     "@connector/dsp-protocol": "workspace:*",
@@ -498,6 +510,7 @@ config/
 ```
 
 ### Build Strategy
+
 - **TypeScript Project References:** Efficient incremental builds
 - **Shared tsconfig:** Base configuration with package-specific overrides
 - **Bundle Strategy:** Each app bundled separately, packages as libraries

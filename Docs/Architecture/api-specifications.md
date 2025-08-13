@@ -3,6 +3,7 @@
 ## DSP Protocol API Specification
 
 ### Base Configuration
+
 - **Base URL:** `https://{connector-host}/dsp`
 - **Content Type:** `application/ld+json` (JSON-LD)
 - **Authentication:** Bearer tokens with DPoP binding
@@ -13,221 +14,245 @@
 #### 1. Catalog API
 
 ##### GET /dsp/catalog
+
 Retrieve the connector's catalog of available datasets and services.
 
 **Query Parameters:**
+
 ```typescript
 interface CatalogQuery {
-  filter?: string;           // SPARQL-like filter expression
-  limit?: number;           // Max results (default: 50, max: 1000)
-  offset?: number;          // Pagination offset
-  profile?: string;         // Content profile (dcat-ap, ngsi-ld)
-  participantId?: string;   // Filter by participant
+  filter?: string; // SPARQL-like filter expression
+  limit?: number; // Max results (default: 50, max: 1000)
+  offset?: number; // Pagination offset
+  profile?: string; // Content profile (dcat-ap, ngsi-ld)
+  participantId?: string; // Filter by participant
 }
 ```
 
 **Response:**
+
 ```typescript
 interface CatalogResponse {
-  "@context": string | object;
-  "@type": "dcat:Catalog";
-  "@id": string;
-  "dcat:dataset": DatasetOffer[];
-  "dcat:service": ServiceOffer[];
-  "dct:conformsTo": string;
-  "foaf:homepage": string;
-  "dct:title": string;
-  "dct:description": string;
-  "dcat:themeTaxonomy": string[];
+  '@context': string | object;
+  '@type': 'dcat:Catalog';
+  '@id': string;
+  'dcat:dataset': DatasetOffer[];
+  'dcat:service': ServiceOffer[];
+  'dct:conformsTo': string;
+  'foaf:homepage': string;
+  'dct:title': string;
+  'dct:description': string;
+  'dcat:themeTaxonomy': string[];
 }
 
 interface DatasetOffer {
-  "@type": "dcat:Dataset";
-  "@id": string;
-  "dct:title": string;
-  "dct:description": string;
-  "dcat:keyword": string[];
-  "dcat:theme": string[];
-  "dct:format": string[];
-  "dcat:distribution": Distribution[];
-  "odrl:hasPolicy": string; // Policy URI reference
-  "dct:conformsTo": string[];
+  '@type': 'dcat:Dataset';
+  '@id': string;
+  'dct:title': string;
+  'dct:description': string;
+  'dcat:keyword': string[];
+  'dcat:theme': string[];
+  'dct:format': string[];
+  'dcat:distribution': Distribution[];
+  'odrl:hasPolicy': string; // Policy URI reference
+  'dct:conformsTo': string[];
 }
 
 interface ServiceOffer {
-  "@type": "dcat:DataService";
-  "@id": string;
-  "dct:title": string;
-  "dct:description": string;
-  "dcat:endpointURL": string;
-  "dcat:endpointDescription": string; // OpenAPI/AsyncAPI URL
-  "dcat:servesDataset": string[];
-  "odrl:hasPolicy": string;
-  "dct:conformsTo": string[];
+  '@type': 'dcat:DataService';
+  '@id': string;
+  'dct:title': string;
+  'dct:description': string;
+  'dcat:endpointURL': string;
+  'dcat:endpointDescription': string; // OpenAPI/AsyncAPI URL
+  'dcat:servesDataset': string[];
+  'odrl:hasPolicy': string;
+  'dct:conformsTo': string[];
 }
 ```
 
 #### 2. Contract Negotiation API
 
 ##### POST /dsp/negotiations
+
 Initiate a contract negotiation.
 
 **Request:**
+
 ```typescript
 interface ContractRequestMessage {
-  "@context": string | object;
-  "@type": "dspace:ContractRequestMessage";
-  "@id": string;
-  "dspace:providerPid": string;
-  "dspace:consumerPid": string;
-  "dspace:offer": ContractOffer;
-  "dspace:callbackAddress": string;
+  '@context': string | object;
+  '@type': 'dspace:ContractRequestMessage';
+  '@id': string;
+  'dspace:providerPid': string;
+  'dspace:consumerPid': string;
+  'dspace:offer': ContractOffer;
+  'dspace:callbackAddress': string;
 }
 
 interface ContractOffer {
-  "@type": "odrl:Offer";
-  "@id": string;
-  "odrl:target": string; // Asset or Service ID
-  "odrl:assigner": string;
-  "odrl:assignee": string;
-  "odrl:permission": Permission[];
-  "odrl:prohibition"?: Prohibition[];
-  "odrl:obligation"?: Duty[];
+  '@type': 'odrl:Offer';
+  '@id': string;
+  'odrl:target': string; // Asset or Service ID
+  'odrl:assigner': string;
+  'odrl:assignee': string;
+  'odrl:permission': Permission[];
+  'odrl:prohibition'?: Prohibition[];
+  'odrl:obligation'?: Duty[];
 }
 ```
 
 **Response:**
+
 ```typescript
 interface ContractNegotiation {
-  "@context": string | object;
-  "@type": "dspace:ContractNegotiation";
-  "@id": string;
-  "dspace:providerPid": string;
-  "dspace:consumerPid": string;
-  "dspace:state": NegotiationState;
-  "dct:created": string;
-  "dct:modified": string;
+  '@context': string | object;
+  '@type': 'dspace:ContractNegotiation';
+  '@id': string;
+  'dspace:providerPid': string;
+  'dspace:consumerPid': string;
+  'dspace:state': NegotiationState;
+  'dct:created': string;
+  'dct:modified': string;
 }
 
-type NegotiationState = 
-  | "dspace:REQUESTED" 
-  | "dspace:OFFERED" 
-  | "dspace:ACCEPTED" 
-  | "dspace:AGREED" 
-  | "dspace:VERIFIED" 
-  | "dspace:FINALIZED" 
-  | "dspace:TERMINATED";
+type NegotiationState =
+  | 'dspace:REQUESTED'
+  | 'dspace:OFFERED'
+  | 'dspace:ACCEPTED'
+  | 'dspace:AGREED'
+  | 'dspace:VERIFIED'
+  | 'dspace:FINALIZED'
+  | 'dspace:TERMINATED';
 ```
 
 ##### GET /dsp/negotiations/{id}
+
 Retrieve negotiation status.
 
 ##### POST /dsp/negotiations/{id}/request
+
 Send counter-offer or acceptance.
 
 ##### POST /dsp/negotiations/{id}/events
+
 Handle negotiation events (offers, acceptances, terminations).
 
 #### 3. Agreement API
 
 ##### POST /dsp/agreements
+
 Finalize a negotiated agreement.
 
 **Request:**
+
 ```typescript
 interface ContractAgreementMessage {
-  "@context": string | object;
-  "@type": "dspace:ContractAgreementMessage";
-  "@id": string;
-  "dspace:providerPid": string;
-  "dspace:consumerPid": string;
-  "dspace:agreement": ContractAgreement;
+  '@context': string | object;
+  '@type': 'dspace:ContractAgreementMessage';
+  '@id': string;
+  'dspace:providerPid': string;
+  'dspace:consumerPid': string;
+  'dspace:agreement': ContractAgreement;
 }
 
 interface ContractAgreement {
-  "@type": "odrl:Agreement";
-  "@id": string;
-  "odrl:target": string;
-  "odrl:assigner": string;
-  "odrl:assignee": string;
-  "odrl:permission": Permission[];
-  "odrl:prohibition"?: Prohibition[];
-  "odrl:obligation"?: Duty[];
-  "dct:created": string;
-  "dspace:timestamp": string;
-  "dspace:contractStart": string;
-  "dspace:contractEnd"?: string;
+  '@type': 'odrl:Agreement';
+  '@id': string;
+  'odrl:target': string;
+  'odrl:assigner': string;
+  'odrl:assignee': string;
+  'odrl:permission': Permission[];
+  'odrl:prohibition'?: Prohibition[];
+  'odrl:obligation'?: Duty[];
+  'dct:created': string;
+  'dspace:timestamp': string;
+  'dspace:contractStart': string;
+  'dspace:contractEnd'?: string;
 }
 ```
 
 ##### GET /dsp/agreements/{id}
+
 Retrieve agreement details.
 
 ##### POST /dsp/agreements/{id}/verification
+
 Verify agreement integrity.
 
 #### 4. Transfer Process API
 
 ##### POST /dsp/transfers
+
 Initiate a data transfer or service invocation.
 
 **Request:**
+
 ```typescript
 interface TransferRequestMessage {
-  "@context": string | object;
-  "@type": "dspace:TransferRequestMessage";
-  "@id": string;
-  "dspace:providerPid": string;
-  "dspace:consumerPid": string;
-  "dspace:agreementId": string;
-  "dspace:format": string;
-  "dct:format"?: string;
-  "dspace:dataDestination"?: DataAddress;
-  "dspace:transferType": TransferType;
+  '@context': string | object;
+  '@type': 'dspace:TransferRequestMessage';
+  '@id': string;
+  'dspace:providerPid': string;
+  'dspace:consumerPid': string;
+  'dspace:agreementId': string;
+  'dspace:format': string;
+  'dct:format'?: string;
+  'dspace:dataDestination'?: DataAddress;
+  'dspace:transferType': TransferType;
 }
 
 interface DataAddress {
-  "@type": "dspace:DataAddress";
-  "dspace:endpointType": string;
-  "dspace:endpoint": string;
-  "dspace:endpointProperties"?: Record<string, any>;
+  '@type': 'dspace:DataAddress';
+  'dspace:endpointType': string;
+  'dspace:endpoint': string;
+  'dspace:endpointProperties'?: Record<string, any>;
 }
 
-type TransferType = "dspace:HttpData" | "dspace:HttpProxy" | "dspace:StreamingData" | "dspace:ServiceInvocation";
+type TransferType =
+  | 'dspace:HttpData'
+  | 'dspace:HttpProxy'
+  | 'dspace:StreamingData'
+  | 'dspace:ServiceInvocation';
 ```
 
 **Response:**
+
 ```typescript
 interface TransferProcess {
-  "@context": string | object;
-  "@type": "dspace:TransferProcess";
-  "@id": string;
-  "dspace:providerPid": string;
-  "dspace:consumerPid": string;
-  "dspace:state": TransferState;
-  "dspace:dataDestination"?: DataAddress;
-  "dct:created": string;
-  "dct:modified": string;
+  '@context': string | object;
+  '@type': 'dspace:TransferProcess';
+  '@id': string;
+  'dspace:providerPid': string;
+  'dspace:consumerPid': string;
+  'dspace:state': TransferState;
+  'dspace:dataDestination'?: DataAddress;
+  'dct:created': string;
+  'dct:modified': string;
 }
 
-type TransferState = 
-  | "dspace:REQUESTED" 
-  | "dspace:STARTED" 
-  | "dspace:COMPLETED" 
-  | "dspace:SUSPENDED" 
-  | "dspace:TERMINATED";
+type TransferState =
+  | 'dspace:REQUESTED'
+  | 'dspace:STARTED'
+  | 'dspace:COMPLETED'
+  | 'dspace:SUSPENDED'
+  | 'dspace:TERMINATED';
 ```
 
 ##### GET /dsp/transfers/{id}
+
 Retrieve transfer status.
 
 ##### POST /dsp/transfers/{id}/start
+
 Start the transfer process.
 
 ##### POST /dsp/transfers/{id}/completion
+
 Signal transfer completion.
 
 ##### POST /dsp/transfers/{id}/termination
+
 Terminate the transfer.
 
 ### Extended DSP API (Connector-Specific)
@@ -235,104 +260,114 @@ Terminate the transfer.
 #### 5. Subscriptions API
 
 ##### POST /dsp/subscriptions
+
 Create a standing subscription for real-time data.
 
 **Request:**
+
 ```typescript
 interface SubscriptionRequest {
-  "@context": string | object;
-  "@type": "connector:SubscriptionRequest";
-  "@id": string;
-  "connector:agreementId": string;
-  "connector:selector": Selector;
-  "connector:mode": SubscriptionMode;
-  "connector:schedule"?: string; // RRULE format
-  "connector:since"?: string;
-  "connector:until"?: string;
-  "connector:callbackUrl": string;
+  '@context': string | object;
+  '@type': 'connector:SubscriptionRequest';
+  '@id': string;
+  'connector:agreementId': string;
+  'connector:selector': Selector;
+  'connector:mode': SubscriptionMode;
+  'connector:schedule'?: string; // RRULE format
+  'connector:since'?: string;
+  'connector:until'?: string;
+  'connector:callbackUrl': string;
 }
 
 interface Selector {
-  "@type": "connector:Selector";
-  "connector:assetIds"?: string[];
-  "connector:tags"?: string[];
-  "connector:query"?: string; // SPARQL or JSONPath
-  "connector:temporal"?: TemporalCoverage;
+  '@type': 'connector:Selector';
+  'connector:assetIds'?: string[];
+  'connector:tags'?: string[];
+  'connector:query'?: string; // SPARQL or JSONPath
+  'connector:temporal'?: TemporalCoverage;
 }
 
-type SubscriptionMode = "periodic" | "push" | "stream";
+type SubscriptionMode = 'periodic' | 'push' | 'stream';
 ```
 
 ##### GET /dsp/subscriptions/{id}
+
 Retrieve subscription status.
 
 ##### DELETE /dsp/subscriptions/{id}
+
 Cancel subscription.
 
 #### 6. Tickets API
 
 ##### POST /dsp/tickets
+
 Generate short-lived access tokens.
 
 **Request:**
+
 ```typescript
 interface TicketRequest {
-  "@context": string | object;
-  "@type": "connector:TicketRequest";
-  "@id": string;
-  "connector:agreementId": string;
-  "connector:assetId"?: string;
-  "connector:since"?: string;
-  "connector:mode": TransferMode;
+  '@context': string | object;
+  '@type': 'connector:TicketRequest';
+  '@id': string;
+  'connector:agreementId': string;
+  'connector:assetId'?: string;
+  'connector:since'?: string;
+  'connector:mode': TransferMode;
 }
 
-type TransferMode = "pull" | "push" | "stream" | "service";
+type TransferMode = 'pull' | 'push' | 'stream' | 'service';
 ```
 
 **Response:**
+
 ```typescript
 interface Ticket {
-  "@context": string | object;
-  "@type": "connector:Ticket";
-  "@id": string;
-  "connector:token": string; // DPoP-bound JWT
-  "connector:endpoint": string;
-  "connector:expiresAt": string;
-  "connector:constraints": ConstraintKV[];
+  '@context': string | object;
+  '@type': 'connector:Ticket';
+  '@id': string;
+  'connector:token': string; // DPoP-bound JWT
+  'connector:endpoint': string;
+  'connector:expiresAt': string;
+  'connector:constraints': ConstraintKV[];
 }
 ```
 
 #### 7. Usage API
 
 ##### GET /dsp/usage/{agreementId}
+
 Retrieve usage statistics for an agreement.
 
 **Response:**
+
 ```typescript
 interface UsageReport {
-  "@context": string | object;
-  "@type": "connector:UsageReport";
-  "@id": string;
-  "connector:agreementId": string;
-  "connector:period": {
-    "connector:start": string;
-    "connector:end": string;
+  '@context': string | object;
+  '@type': 'connector:UsageReport';
+  '@id': string;
+  'connector:agreementId': string;
+  'connector:period': {
+    'connector:start': string;
+    'connector:end': string;
   };
-  "connector:counters": UsageCounter[];
-  "connector:quotas": QuotaStatus[];
+  'connector:counters': UsageCounter[];
+  'connector:quotas': QuotaStatus[];
 }
 
 interface UsageCounter {
-  "@type": "connector:UsageCounter";
-  "connector:metric": string; // "requests", "bytes", "duration"
-  "connector:value": number;
-  "connector:unit": string;
+  '@type': 'connector:UsageCounter';
+  'connector:metric': string; // "requests", "bytes", "duration"
+  'connector:value': number;
+  'connector:unit': string;
 }
 ```
 
 ## Administrative API Specification
 
 ### Base Configuration
+
 - **Base URL:** `https://{connector-host}/admin`
 - **Content Type:** `application/json`
 - **Authentication:** mTLS or API Key
@@ -341,9 +376,11 @@ interface UsageCounter {
 ### Asset Management
 
 #### POST /admin/assets
+
 Create or update an asset.
 
 **Request:**
+
 ```typescript
 interface AssetCreateRequest {
   id?: string;
@@ -359,23 +396,29 @@ interface AssetCreateRequest {
 ```
 
 #### GET /admin/assets
+
 List assets with filtering and pagination.
 
 #### GET /admin/assets/{id}
+
 Retrieve specific asset.
 
 #### PATCH /admin/assets/{id}/publish
+
 Publish asset to catalog.
 
 #### PATCH /admin/assets/{id}/deprecate
+
 Deprecate asset.
 
 ### Service Management
 
 #### POST /admin/services
+
 Register a service offering.
 
 **Request:**
+
 ```typescript
 interface ServiceCreateRequest {
   id?: string;
@@ -393,9 +436,11 @@ interface ServiceCreateRequest {
 ### Policy Management
 
 #### POST /admin/policies
+
 Create a policy.
 
 **Request:**
+
 ```typescript
 interface PolicyCreateRequest {
   id?: string;
@@ -409,40 +454,47 @@ interface PolicyCreateRequest {
 ```
 
 #### POST /admin/policies/{id}/assign
+
 Assign policy to assets/services.
 
 #### POST /admin/policy-packs
+
 Create policy pack (bundle of related policies).
 
 ### Trust Management
 
 #### POST /admin/trust-anchors
+
 Add trusted certificate authority or issuer.
 
 #### GET /admin/trust-anchors
+
 List trust anchors.
 
 #### POST /admin/trust-anchors/{id}/revoke
+
 Revoke trust anchor.
 
 ### Evidence and Audit
 
 #### GET /admin/evidence/{agreementId}
+
 Generate evidence bundle for agreement.
 
 **Response:**
+
 ```typescript
 interface EvidenceBundle {
-  "@context": string | object;
-  "@type": "connector:EvidenceBundle";
-  "@id": string;
-  "connector:agreementId": string;
-  "connector:policyHash": string;
-  "connector:dutyReceipts": DutyReceipt[];
-  "connector:usageRecords": UsageRecord[];
-  "connector:telemetryExcerpts": TelemetryRecord[];
-  "connector:generatedAt": string;
-  "connector:signature": string;
+  '@context': string | object;
+  '@type': 'connector:EvidenceBundle';
+  '@id': string;
+  'connector:agreementId': string;
+  'connector:policyHash': string;
+  'connector:dutyReceipts': DutyReceipt[];
+  'connector:usageRecords': UsageRecord[];
+  'connector:telemetryExcerpts': TelemetryRecord[];
+  'connector:generatedAt': string;
+  'connector:signature': string;
 }
 ```
 
@@ -501,7 +553,7 @@ interface PolicyAdministrationPoint {
 interface TransportAdapter {
   readonly id: string;
   readonly supportedSchemes: string[];
-  
+
   init(config: AdapterConfig): Promise<void>;
   plan(request: TransferPlanRequest): Promise<TransferPlan>;
   execute(plan: TransferPlan, context: EnforcementContext): Promise<TransferResult>;
@@ -510,7 +562,7 @@ interface TransportAdapter {
 
 interface DutyExecutor {
   readonly supportedDuties: string[];
-  
+
   canExecute(duty: Duty): boolean;
   execute(duty: Duty, context: ExecutionContext): Promise<DutyReceipt>;
   validate(duty: Duty): Promise<ValidationResult>;

@@ -1,4 +1,5 @@
 # Core coding-rules
+
 - Always prefer simple solutions
 - Avoid duplication of code whenever possible, which means checking for other areas of the codebase that might already have similar code and functionality
 - Write code that takes into account the different environments: dev, test, and prod
@@ -12,8 +13,8 @@
 - Never overwrite my env file without first asking and confirming
 - The source code must be the same for both local deveklopment and the remote production server deployment
 - A local development and testing environment is required that does not require access to the live server
-- CSS code blocks musty be in *.css files and not in the *.html files
-- Javascript code must reside in *.js files and not in script blocks of *.html files.
+- CSS code blocks musty be in _.css files and not in the _.html files
+- Javascript code must reside in _.js files and not in script blocks of _.html files.
 - When creating or editing new code blocks, provide explicit documentation. For JS code, using JSDoc-style formatting.
 - The code is required to be the same for development, test, and production. For example do not create code that only runs in one environment or has conditional code for one environment. Use environmental variables and .env files to distinquish differences between runtime environments.
 - Always fix the root issue, don't write code that masks or covers up the issue.
@@ -111,7 +112,7 @@ Primitive obsession → Introduce types/value objects.
 Duplicate code → Extract and reuse.
 Boolean flags that change behavior → Split into separate functions/types.
 
-# 13)  Environment & Configuration (team policy)
+# 13) Environment & Configuration (team policy)
 
 Same source code for dev/test/prod; differences expressed via configuration (.env, flags, manifests). Never fork logic by environment.
 Local dev should not require access to live systems; provide seed data and test doubles.

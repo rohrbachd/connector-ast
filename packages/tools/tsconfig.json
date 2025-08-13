@@ -9,8 +9,5 @@
     "sourceMap": true,
     "inlineSources": true
   },
-  "references": [
-    { "path": "../core" },
-    { "path": "../shared" }
-  ]
+  "references": [{ "path": "../core" }, { "path": "../shared" }]
 }
