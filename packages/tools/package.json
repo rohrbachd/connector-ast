@@ -1,0 +1,21 @@
+{
+  "name": "@connector/tools",
+  "version": "1.0.0",
+  "description": "Development tools and CLI utilities for the Lightweight Dataspace Connector",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rimraf dist",
+    "lint": "eslint . --ext .ts",
+    "test": "vitest run"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": {
+    "connector-cli": "dist/cli.js"
+  }
+}
