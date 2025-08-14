@@ -3,6 +3,9 @@ import tseslint from 'typescript-eslint';
 import prettierConfig from 'eslint-config-prettier';
 
 export default tseslint.config(
+  {
+    ignores: ['**/dist/**', '**/*.d.ts', 'node_modules/'],
+  },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   prettierConfig,
@@ -21,6 +24,5 @@ export default tseslint.config(
       '@typescript-eslint/consistent-type-imports': 'error',
       'no-console': ['error', { allow: ['warn', 'error', 'info'] }],
     },
-    ignores: ['dist/', 'node_modules/', '*.d.ts'],
   },
 );

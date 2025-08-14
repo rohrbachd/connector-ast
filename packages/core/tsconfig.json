@@ -9,8 +9,6 @@
     "sourceMap": true,
     "inlineSources": true
   },
-  "references": [
-    { "path": "../shared" }
-  ],
+  "references": [{ "path": "../shared" }],
   "include": ["src/**/*"]
 }
