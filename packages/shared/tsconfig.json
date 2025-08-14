@@ -9,5 +9,6 @@
     "sourceMap": true,
     "inlineSources": true
   },
-  "references": []
+  "references": [],
+  "include": ["src/**/*"]
 }

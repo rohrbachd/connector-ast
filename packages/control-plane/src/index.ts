@@ -1,5 +1,5 @@
 import fastify from 'fastify';
-import { ConnectorError } from '@connector/core';
+import { ConnectorError } from '../../core/src/errors';
 
 const server = fastify();
 
