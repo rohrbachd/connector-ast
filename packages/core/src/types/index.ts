@@ -1,7 +1,7 @@
-export interface BaseEntity {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
+export interface BaseEntityProps {
+  id?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface PaginatedResult<T> {

@@ -73,7 +73,11 @@ importers:
         specifier: ^7.13.0
         version: 7.13.0
 
-  packages/control-plane: {}
+  packages/control-plane:
+    dependencies:
+      '@connector/core':
+        specifier: workspace:*
+        version: link:../core
 
   packages/core: {}
 
