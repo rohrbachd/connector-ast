@@ -59,13 +59,13 @@ gantt
 - [x] Initialize monorepo with pnpm workspaces
 - [x] Set up TypeScript configuration with project references
 - [x] Configure ESLint, Prettier, and Husky pre-commit hooks
-- [ ] Set up basic CI/CD pipeline (GitHub Actions)
-- [ ] Create Docker development environment
-- [ ] Set up PostgreSQL and Redis containers
-- [ ] Initialize core packages structure
-- [ ] Create shared TypeScript types and interfaces
-- [ ] Set up logging framework (pino)
-- [ ] Configure environment management (convict)
+- [x] Set up basic CI/CD pipeline (GitHub Actions)
+- [x] Create Docker development environment
+- [x] Set up PostgreSQL and Redis containers
+- [x] Initialize core packages structure
+- [x] Create shared TypeScript types and interfaces
+- [x] Set up logging framework (pino)
+- [x] Configure environment management (convict)
 
 **Deliverables:**
 
@@ -88,7 +88,7 @@ gantt
 
 **Tasks:**
 
-- [ ] Implement base entity classes and domain models
+- [x] Implement base entity classes and domain models
 - [ ] Create repository pattern interfaces and PostgreSQL implementations
 - [ ] Set up Fastify applications for CP and DP
 - [ ] Implement dependency injection container
