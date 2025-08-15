@@ -11,7 +11,9 @@
     "test": "vitest run",
     "dev": "fastify start -w -l info"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@connector/core": "workspace:*"
+  },
   "devDependencies": {},
   "publishConfig": {
     "access": "public"
