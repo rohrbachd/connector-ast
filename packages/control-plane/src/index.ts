@@ -1,5 +1,5 @@
 import fastify from 'fastify';
-import { ConnectorError } from '@connector/core';
+import { ConnectorError } from '../../core/src/errors';
 
 const server = fastify();
 
@@ -9,9 +9,10 @@ server.get('/health', async () => {
 
 server.setErrorHandler((error, request, reply) => {
   if (error instanceof ConnectorError) {
-    reply.status(error.statusCode).send({
-      error: error.errorCode,
-      message: error.message,
+    const connectorError = error as ConnectorError;
+    reply.status(connectorError.statusCode).send({
+      error: connectorError.errorCode,
+      message: connectorError.message,
     });
   } else {
     reply.status(500).send({

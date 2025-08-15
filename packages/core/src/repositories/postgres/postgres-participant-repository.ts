@@ -1,6 +1,6 @@
 import type { Pool } from 'pg';
 import { Participant } from '../../domain/participant';
-import type { ParticipantStatus } from '../../domain/types';
+import type { ParticipantRole, ParticipantStatus } from '../../domain/types';
 import type { ParticipantRepository } from '../participant-repository';
 
 type ParticipantRow = {
@@ -87,7 +87,7 @@ export class PostgresParticipantRepository implements ParticipantRepository {
       name: row.name,
       description: row.description ?? undefined,
       homepageUrl: row.homepage_url ?? undefined,
-      roles: row.roles ?? [],
+      roles: row.roles?.map((role) => role as ParticipantRole) ?? [],
       status: row.status as ParticipantStatus,
       address: row.address ? JSON.parse(row.address) : undefined,
       trustLevel: row.trust_level ?? 0,
