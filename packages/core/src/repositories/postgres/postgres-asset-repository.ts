@@ -47,7 +47,7 @@ export class PostgresAssetRepository implements AssetRepository {
         entity.status,
         entity.createdAt,
         entity.updatedAt,
-      ]
+      ],
     );
     return this.mapRow(result.rows[0]);
   }
@@ -66,7 +66,7 @@ export class PostgresAssetRepository implements AssetRepository {
         entity.version,
         entity.status,
         entity.updatedAt,
-      ]
+      ],
     );
     return this.mapRow(result.rows[0]);
   }

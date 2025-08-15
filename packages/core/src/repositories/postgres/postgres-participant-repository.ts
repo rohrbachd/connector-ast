@@ -49,7 +49,7 @@ export class PostgresParticipantRepository implements ParticipantRepository {
         entity.trustLevel,
         entity.createdAt,
         entity.updatedAt,
-      ]
+      ],
     );
     return this.mapRow(result.rows[0]);
   }
@@ -69,7 +69,7 @@ export class PostgresParticipantRepository implements ParticipantRepository {
         entity.address ? JSON.stringify(entity.address) : null,
         entity.trustLevel,
         entity.updatedAt,
-      ]
+      ],
     );
     return this.mapRow(result.rows[0]);
   }
