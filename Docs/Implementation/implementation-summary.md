@@ -74,6 +74,7 @@ This project follows a comprehensive documentation architecture designed for bot
 - ✅ **Core Domain Models**: Base entity classes with Participant and Asset definitions
 - ✅ **Repository Layer**: Interfaces and PostgreSQL implementations for core entities
 - ✅ **Fastify Applications**: Shared Fastify setup for Control and Data Planes with health endpoints
+- ✅ **Dependency Injection Container**: Lightweight service registration and resolution
 
 ## Implementation Roadmap
 
