@@ -68,11 +68,11 @@ export class Container {
       if (this.singletons.has(token)) {
         return this.singletons.get(token);
       }
-      const instance = new useClass(...deps.map((d) => this.resolve(d)));
+      const instance = new useClass(...deps.map(d => this.resolve(d)));
       this.singletons.set(token, instance);
       return instance;
     }
-    return new useClass(...deps.map((d) => this.resolve(d)));
+    return new useClass(...deps.map(d => this.resolve(d)));
   }
 
   /**
@@ -83,4 +83,3 @@ export class Container {
     this.singletons.clear();
   }
 }
-
