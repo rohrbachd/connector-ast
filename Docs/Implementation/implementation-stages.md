@@ -93,7 +93,7 @@ gantt
 - [x] Set up Fastify applications for CP and DP
 - [x] Implement dependency injection container
 - [x] Create event bus for internal communication
-- [ ] Set up database migrations with Prisma
+- [x] Set up database migrations with Prisma
 - [ ] Implement configuration management
 - [ ] Create error handling middleware
 - [ ] Set up request/response validation with JSON Schema
