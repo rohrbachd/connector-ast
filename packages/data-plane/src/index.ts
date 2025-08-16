@@ -1,11 +1,12 @@
 import { createServer } from '@connector/core';
+import { config } from '@connector/shared';
 
 /**
  * Bootstraps and starts the Data Plane Fastify server.
  */
 export async function start(): Promise<void> {
   const server = createServer();
-  const port = Number(process.env.DP_PORT) || 3001;
+  const port = config.get('dataPlane.port');
 
   try {
     await server.listen({ port, host: '0.0.0.0' });
