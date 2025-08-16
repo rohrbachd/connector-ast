@@ -1,0 +1,67 @@
+// Prisma schema for core entities
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum ParticipantStatus {
+  active
+  suspended
+  revoked
+}
+
+enum ParticipantRole {
+  DataProvider
+  DataConsumer
+  ServiceProvider
+}
+
+enum AssetType {
+  dataset
+  service
+}
+
+enum AssetStatus {
+  draft
+  published
+  deprecated
+  archived
+}
+
+model Participant {
+  id          String            @id @default(uuid())
+  createdAt   DateTime          @default(now()) @map("created_at")
+  updatedAt   DateTime          @updatedAt     @map("updated_at")
+  did         String            @unique
+  name        String
+  description String?
+  homepageUrl String?           @map("homepage_url")
+  roles       ParticipantRole[] @default([])
+  status      ParticipantStatus @default(active)
+  address     Json?
+  trustLevel  Int               @default(0) @map("trust_level")
+  assets      Asset[]
+
+  @@map("participants")
+}
+
+model Asset {
+  id            String     @id @default(uuid())
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt     @map("updated_at")
+  externalId    String     @unique        @map("external_id")
+  participantId String     @map("participant_id")
+  participant   Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  assetType     AssetType  @map("asset_type")
+  title         String
+  description   String?
+  version       String     @default("1.0.0")
+  status        AssetStatus @default(draft)
+
+  @@map("assets")
+}
