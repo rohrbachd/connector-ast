@@ -75,6 +75,7 @@ This project follows a comprehensive documentation architecture designed for bot
 - ✅ **Repository Layer**: Interfaces and PostgreSQL implementations for core entities
 - ✅ **Fastify Applications**: Shared Fastify setup for Control and Data Planes with health endpoints
 - ✅ **Dependency Injection Container**: Lightweight service registration and resolution
+- ✅ **Event Bus**: Simple publish/subscribe mechanism for internal communication
 
 ## Implementation Roadmap
 
