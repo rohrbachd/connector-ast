@@ -12,7 +12,8 @@
     "dev": "fastify start -w -l info"
   },
   "dependencies": {
-    "@connector/core": "workspace:*"
+    "@connector/core": "workspace:*",
+    "@connector/shared": "workspace:*"
   },
   "devDependencies": {},
   "publishConfig": {
