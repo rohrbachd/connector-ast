@@ -14,7 +14,8 @@ export class EventBus<Events extends Record<string, unknown>> {
    * @param handler Handler invoked when the event is published.
    */
   on<K extends keyof Events>(event: K, handler: EventHandler<Events[K]>): void {
-    const existing = (this.handlers.get(event) as Set<EventHandler<Events[K]>> | undefined) ?? new Set();
+    const existing =
+      (this.handlers.get(event) as Set<EventHandler<Events[K]>> | undefined) ?? new Set();
     existing.add(handler);
     this.handlers.set(event, existing as Set<EventHandler<Events[keyof Events]>>);
   }
