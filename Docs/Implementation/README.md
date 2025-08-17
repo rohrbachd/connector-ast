@@ -8,6 +8,7 @@ This folder contains all implementation-related documentation for the Lightweigh
 2. **Development Process**: [`../Operations/workflow.md`](../Operations/workflow.md) - Step-by-step workflow
 3. **Current Stage**: Check implementation-summary.md for current development stage
 4. **Coding Standards**: [`coding-rules.md`](coding-rules.md) - Development guidelines
+5. **Run & Test**: [`connector-setup-testing.md`](connector-setup-testing.md) - Local and Docker usage guide
 
 ## 📋 Implementation Documents
 
