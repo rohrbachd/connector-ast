@@ -3,10 +3,10 @@
  * Allows registering classes, factory functions, or values
  * and resolving them with optional singleton or transient scope.
  */
-export type Token<T = unknown> = string | symbol | (new (...args: any[]) => T);
+export type Token<T = unknown> = string | symbol | (new (...args: unknown[]) => T);
 
 export interface ClassProvider<T> {
-  useClass: new (...args: any[]) => T;
+  useClass: new (...args: unknown[]) => T;
   deps?: Token[];
   scope?: 'singleton' | 'transient';
 }
@@ -23,8 +23,8 @@ export interface ValueProvider<T> {
 export type Provider<T> = ClassProvider<T> | FactoryProvider<T> | ValueProvider<T>;
 
 export class Container {
-  private readonly registry = new Map<Token, Provider<any>>();
-  private readonly singletons = new Map<Token, any>();
+  private readonly registry = new Map<Token, Provider<unknown>>();
+  private readonly singletons = new Map<Token, unknown>();
 
   /**
    * Register a dependency provider.
@@ -41,7 +41,7 @@ export class Container {
    * @throws If no provider registered for token.
    */
   resolve<T>(token: Token<T>): T {
-    const provider = this.registry.get(token);
+    const provider = this.registry.get(token) as Provider<T> | undefined;
     if (!provider) {
       throw new Error(`No provider found for token: ${String(token)}`);
     }
@@ -53,10 +53,10 @@ export class Container {
     if ('useFactory' in provider) {
       if (provider.scope === 'singleton') {
         if (this.singletons.has(token)) {
-          return this.singletons.get(token);
+          return this.singletons.get(token) as T;
         }
         const instance = provider.useFactory(this);
-        this.singletons.set(token, instance);
+        this.singletons.set(token, instance as unknown);
         return instance;
       }
       return provider.useFactory(this);
@@ -66,10 +66,10 @@ export class Container {
     const { useClass, deps = [], scope } = provider as ClassProvider<T>;
     if (scope !== 'transient') {
       if (this.singletons.has(token)) {
-        return this.singletons.get(token);
+        return this.singletons.get(token) as T;
       }
       const instance = new useClass(...deps.map(d => this.resolve(d)));
-      this.singletons.set(token, instance);
+      this.singletons.set(token, instance as unknown);
       return instance;
     }
     return new useClass(...deps.map(d => this.resolve(d)));
