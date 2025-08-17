@@ -8,6 +8,7 @@ This directory contains all project documentation organized by purpose and audie
 
 - **[Implementation Guide](Implementation/README.md)** - Start here for development tasks
 - **[Implementation Summary](Implementation/implementation-summary.md)** - Master project roadmap
+- **[Connector Setup & Testing](Implementation/connector-setup-testing.md)** - Run the connector locally or with Docker
 - **[Workflow Guide](Operations/workflow.md)** - Step-by-step development process
 
 ### 🏗️ Architecture & Design
