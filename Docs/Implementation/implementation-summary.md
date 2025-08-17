@@ -73,7 +73,7 @@ This project follows a comprehensive documentation architecture designed for bot
 - ✅ **CI/CD & Dev Environment**: GitHub Actions pipeline and Docker setup with PostgreSQL and Redis
 - ✅ **Core Domain Models**: Base entity classes with Participant and Asset definitions
 - ✅ **Repository Layer**: Interfaces and PostgreSQL implementations for core entities
-- ✅ **Fastify Applications**: Shared Fastify setup for Control and Data Planes with health endpoints
+- ✅ **Fastify Applications**: Shared Fastify setup for Control and Data Planes with health/readiness endpoints, centralized error handling, and JSON Schema request/response validation
 - ✅ **Dependency Injection Container**: Lightweight service registration and resolution
 - ✅ **Event Bus**: Simple publish/subscribe mechanism for internal communication
 - ✅ **Database Migrations**: Prisma schema and initial migration for core entities

@@ -1,6 +1,6 @@
 import fastify from 'fastify';
 import type { FastifyInstance } from 'fastify';
-import { ConnectorError } from '../errors';
+import { errorHandler } from './error-handler';
 
 /**
  * Creates a preconfigured Fastify server instance with standard
@@ -8,21 +8,52 @@ import { ConnectorError } from '../errors';
  * error handling for ConnectorError instances.
  */
 export function createServer(): FastifyInstance {
-  const server = fastify();
-
-  server.get('/health', async () => ({ status: 'ok' }));
-
-  server.setErrorHandler((error, _request, reply) => {
-    if (error instanceof ConnectorError) {
-      const { statusCode, errorCode, message } = error;
-      reply.status(statusCode).send({ error: errorCode, message });
-    } else {
-      reply.status(500).send({
-        error: 'INTERNAL_SERVER_ERROR',
-        message: 'Internal server error',
-      });
-    }
+  const server = fastify({
+    ajv: {
+      customOptions: { allErrors: true },
+    },
   });
+
+  server.get(
+    '/health',
+    {
+      schema: {
+        querystring: {
+          type: 'object',
+          properties: {
+            ping: { type: 'string' },
+          },
+          additionalProperties: false,
+        },
+        response: {
+          200: {
+            type: 'object',
+            properties: { status: { type: 'string' } },
+            required: ['status'],
+          },
+        },
+      },
+    },
+    async () => ({ status: 'ok' }),
+  );
+
+  server.get(
+    '/ready',
+    {
+      schema: {
+        response: {
+          200: {
+            type: 'object',
+            properties: { status: { type: 'string' } },
+            required: ['status'],
+          },
+        },
+      },
+    },
+    async () => ({ status: 'ready' }),
+  );
+
+  server.setErrorHandler(errorHandler);
 
   return server;
 }

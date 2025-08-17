@@ -16,3 +16,4 @@ export function isValidUrl(url: string): boolean {
 }
 
 export { createServer } from './server';
+export { errorHandler } from './error-handler';
