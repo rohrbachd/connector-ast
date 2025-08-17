@@ -121,7 +121,7 @@ gantt
 **Tasks:**
 
 - [x] Implement DSP message schemas and validation
-- [ ] Create catalog endpoint with basic dataset/service listings
+- [x] Create catalog endpoint with basic dataset/service listings
 - [ ] Implement contract negotiation state machine
 - [ ] Create negotiation endpoints (POST/GET /dsp/negotiations)
 - [ ] Implement agreement endpoints (POST/GET /dsp/agreements)

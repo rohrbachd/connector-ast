@@ -1,11 +1,46 @@
-import { createServer } from '@connector/core';
+import { createServer, Asset, AssetType, InMemoryAssetRepository } from '@connector/core';
 import { config } from '@connector/shared';
+import { registerCatalogRoutes } from './routes/catalog.js';
+import { randomUUID } from 'crypto';
 
 /**
  * Bootstraps and starts the Control Plane Fastify server.
  */
 export async function start(): Promise<void> {
   const server = createServer();
+
+  // Simple dependency setup
+  const assetRepo = new InMemoryAssetRepository();
+
+  // Seed example assets for demonstration
+  await assetRepo.create(
+    new Asset({
+      id: randomUUID(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      externalId: 'https://example.com/datasets/1',
+      participantId: 'urn:example:participant',
+      assetType: AssetType.DATASET,
+      title: 'Sample Dataset',
+      description: 'Example dataset asset',
+    }),
+  );
+
+  await assetRepo.create(
+    new Asset({
+      id: randomUUID(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      externalId: 'https://example.com/service/1',
+      participantId: 'urn:example:participant',
+      assetType: AssetType.SERVICE,
+      title: 'Sample Service',
+      description: 'Example service asset',
+    }),
+  );
+
+  registerCatalogRoutes(server, { assetRepo });
+
   const port = config.get('controlPlane.port');
 
   try {
