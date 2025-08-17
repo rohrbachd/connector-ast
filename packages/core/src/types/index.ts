@@ -16,3 +16,16 @@ export interface ErrorResponse {
   error: string;
   message: string;
 }
+
+/**
+ * Minimal JSON Schema representation used across the project.
+ * This covers only the properties currently required by the
+ * connector and can be extended as needed.
+ */
+export interface JSONSchema {
+  type: string;
+  properties?: Record<string, unknown>;
+  required?: string[];
+  additionalProperties?: boolean | JSONSchema;
+  [key: string]: unknown;
+}

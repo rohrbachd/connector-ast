@@ -90,6 +90,9 @@ importers:
 
   packages/core:
     dependencies:
+      ajv:
+        specifier: ^8.17.1
+        version: 8.17.1
       pg:
         specifier: ^8.16.3
         version: 8.16.3

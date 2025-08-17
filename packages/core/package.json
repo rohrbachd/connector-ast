@@ -11,6 +11,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "ajv": "^8.17.1",
     "pg": "^8.16.3"
   },
   "publishConfig": {
