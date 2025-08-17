@@ -84,6 +84,9 @@ importers:
       '@connector/core':
         specifier: workspace:*
         version: link:../core
+      '@connector/shared':
+        specifier: workspace:*
+        version: link:../shared
 
   packages/core:
     dependencies:
@@ -100,6 +103,9 @@ importers:
       '@connector/core':
         specifier: workspace:*
         version: link:../core
+      '@connector/shared':
+        specifier: workspace:*
+        version: link:../shared
 
   packages/shared: {}
 
