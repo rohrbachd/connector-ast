@@ -51,13 +51,16 @@ This guide explains how to configure, run, and test the Lightweight Dataspace Co
 ## Available Commands
 
 ### Root Project
+
 - `pnpm lint` – run ESLint
 - `pnpm format` – format code with Prettier
 - `pnpm build` – compile all packages
 - `pnpm test` – run all unit tests
 
 ### Per Package
+
 Use `--filter` to target a package:
+
 ```bash
 pnpm --filter @connector/control-plane dev|build|lint|test
 pnpm --filter @connector/data-plane dev|build|lint|test
@@ -66,6 +69,7 @@ pnpm --filter @connector/data-plane dev|build|lint|test
 ## Design Overview (4+1 Model)
 
 ### Logical View
+
 ```plantuml
 @startuml
 package "Control Plane" {
@@ -88,6 +92,7 @@ DP --> Shared
 ```
 
 ### Process View – Catalog Retrieval
+
 ```plantuml
 @startuml
 actor Client
@@ -103,10 +108,13 @@ CP --> Client: catalog response
 ## Running Unit Tests
 
 Run all tests:
+
 ```bash
 pnpm test
 ```
+
 Run tests for a specific package:
+
 ```bash
 pnpm --filter @connector/control-plane test
 pnpm --filter @connector/data-plane test
