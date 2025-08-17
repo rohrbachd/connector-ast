@@ -95,9 +95,9 @@ gantt
 - [x] Create event bus for internal communication
 - [x] Set up database migrations with Prisma
 - [x] Implement configuration management
-- [ ] Create error handling middleware
-- [ ] Set up request/response validation with JSON Schema
-- [ ] Implement basic health check and readiness endpoints
+- [x] Create error handling middleware
+- [x] Set up request/response validation with JSON Schema
+- [x] Implement basic health check and readiness endpoints
 
 **Deliverables:**
 
