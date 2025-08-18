@@ -1,6 +1,4 @@
-import config from './config';
-
-export { config };
-export * from './logger';
-export * from './container';
-export * from './event-bus';
+export { default as config } from './config/index.js';
+export * from './logger/index.js';
+export * from './container/index.js';
+export * from './event-bus/index.js';
