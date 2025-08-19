@@ -122,7 +122,7 @@ gantt
 
 - [x] Implement DSP message schemas and validation
 - [x] Create catalog endpoint with basic dataset/service listings
-- [ ] Implement contract negotiation state machine
+- [x] Implement contract negotiation state machine
 - [ ] Create negotiation endpoints (POST/GET /dsp/negotiations)
 - [ ] Implement agreement endpoints (POST/GET /dsp/agreements)
 - [ ] Create transfer process endpoints (POST/GET /dsp/transfers)
