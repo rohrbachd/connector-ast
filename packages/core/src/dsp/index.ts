@@ -1,2 +1,2 @@
-export * from './messages';
-export * from './validator';
+export * from './messages.js';
+export * from './validator.js';
