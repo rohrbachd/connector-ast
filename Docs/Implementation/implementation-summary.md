@@ -80,6 +80,7 @@ This project follows a comprehensive documentation architecture designed for bot
 - ✅ **Configuration Management**: Centralized environment configuration via Convict
 - ✅ **DSP Message Validation**: Common message envelope schema with AJV-based validation utility
 - ✅ **Catalog Endpoint**: Basic dataset and service listings at `/dsp/catalog`
+- ✅ **Contract Negotiation State Machine**: Lifecycle management with guarded state transitions
 
 ## Implementation Roadmap
 
