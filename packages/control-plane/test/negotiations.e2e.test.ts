@@ -1,8 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import {
-  createServer,
-  InMemoryNegotiationRepository,
-} from '../../core/src/index.js';
+import { createServer, InMemoryNegotiationRepository } from '../../core/src/index.js';
 import { registerNegotiationRoutes } from '../src/routes/negotiations.js';
 
 function setup() {
@@ -21,7 +18,10 @@ describe('negotiation endpoints', () => {
     expect(created).toHaveProperty('@id');
     expect(created).toHaveProperty('state', 'REQUESTED');
 
-    const getRes = await server.inject({ method: 'GET', url: `/dsp/negotiations/${created['@id']}` });
+    const getRes = await server.inject({
+      method: 'GET',
+      url: `/dsp/negotiations/${created['@id']}`,
+    });
     expect(getRes.statusCode).toBe(200);
     expect(getRes.json()).toEqual(created);
   });
