@@ -1,6 +1,13 @@
-import { createServer, Asset, AssetType, InMemoryAssetRepository } from '@connector/core';
+import {
+  createServer,
+  Asset,
+  AssetType,
+  InMemoryAssetRepository,
+  InMemoryNegotiationRepository,
+} from '@connector/core';
 import { config } from '@connector/shared';
 import { registerCatalogRoutes } from './routes/catalog.js';
+import { registerNegotiationRoutes } from './routes/negotiations.js';
 import { randomUUID } from 'crypto';
 
 /**
@@ -11,6 +18,7 @@ export async function start(): Promise<void> {
 
   // Simple dependency setup
   const assetRepo = new InMemoryAssetRepository();
+  const negotiationRepo = new InMemoryNegotiationRepository();
 
   // Seed example assets for demonstration
   await assetRepo.create(
@@ -40,6 +48,7 @@ export async function start(): Promise<void> {
   );
 
   registerCatalogRoutes(server, { assetRepo });
+  registerNegotiationRoutes(server, { negotiationRepo });
 
   const port = config.get('controlPlane.port');
 

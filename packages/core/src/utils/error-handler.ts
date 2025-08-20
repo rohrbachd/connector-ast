@@ -1,5 +1,5 @@
 import type { FastifyError, FastifyReply, FastifyRequest } from 'fastify';
-import { ConnectorError } from '../errors';
+import { ConnectorError } from '../errors/index.js';
 
 /**
  * Global Fastify error handler translating ConnectorError instances

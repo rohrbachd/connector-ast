@@ -1,6 +1,6 @@
 import fastify from 'fastify';
 import type { FastifyInstance } from 'fastify';
-import { errorHandler } from './error-handler';
+import { errorHandler } from './error-handler.js';
 
 /**
  * Creates a preconfigured Fastify server instance with standard

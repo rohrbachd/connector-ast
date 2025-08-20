@@ -1,1 +1,1 @@
-export * from './negotiation.state-machine';
+export * from './negotiation.state-machine.js';
