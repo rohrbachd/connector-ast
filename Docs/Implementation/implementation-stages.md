@@ -124,7 +124,7 @@ gantt
 - [x] Create catalog endpoint with basic dataset/service listings
 - [x] Implement contract negotiation state machine
 - [x] Create negotiation endpoints (POST/GET /dsp/negotiations)
-- [ ] Implement agreement endpoints (POST/GET /dsp/agreements)
+- [x] Implement agreement endpoints (POST/GET /dsp/agreements)
 - [ ] Create transfer process endpoints (POST/GET /dsp/transfers)
 - [ ] Add JSON-LD context processing
 - [ ] Implement basic participant self-description
